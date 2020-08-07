@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Button enter-->
+    <dimen name="Buttom_a_hight">100dp</dimen>
+    <dimen name="Buttom_a_wigth">100dp</dimen>
+    <dimen name="Button_a_m">5dp</dimen>
+    <dimen name="Button_b_hight">80dp</dimen>
+
+    <!-- text sizes -->
+    <dimen name="titel_text_size">48sp</dimen>
+    <dimen name="sub_text_size">30sp</dimen>
+</resources>
