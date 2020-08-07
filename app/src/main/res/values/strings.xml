@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">TicTacToc</string>
+    <string name="winer">Hi</string>
+    <string name="gamename">Tic Tac Game</string>
+    <string name="restartbutton">RESTART</string>
+    <string name="newGame">New Game</string>
+    <string name="player1">PLAYER 1</string>
+    <string name="player2">PLAYER 2</string>
+    <string name="player1win">Player 1 wener</string>
+    <string name="player2win">PLAYER 2 wener</string>
+</resources>

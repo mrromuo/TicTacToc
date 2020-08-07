@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Button enter-->
+    <dimen name="Buttom_a_hight">50dp</dimen>
+    <dimen name="Buttom_a_wigth">50dp</dimen>
+    <dimen name="Button_a_m">4dp</dimen>
+
+
+</resources>

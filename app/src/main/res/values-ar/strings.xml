@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">تيك تاك</string>
+    <string name="winer">أهلا</string>
+    <string name="gamename">لعبة تيك تاك</string>
+    <string name="restartbutton">إعادة</string>
+    <string name="newGame">لعبة جديدة</string>
+    <string name="player1">اللاعب الأول</string>
+    <string name="player2">الاعب الثاني</string>
+    <string name="player1win">فاز اللاعب الأول</string>
+    <string name="player2win">فاز اللاعب الثاني</string>
+</resources>

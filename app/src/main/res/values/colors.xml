@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="loging_gray_border">#6B6B6B</color>
+    <color name="loging_gray_bg">#dadada</color>
+    <color name="image_backgroind_n">#aa99aa</color>
+    <color name="image_backgroind_x">#fdffdf</color>
+    <color name="image_backgroind_o">#DDffDD</color>
+    <color name="loging_registter_bg">#CE5C73</color>
+    <color name="loging_registter_border">#6B212F</color>
+    <color name="loging_login_bg">#64C678</color>
+    <color name="loging_login_border">#0C640A</color>
+</resources>
