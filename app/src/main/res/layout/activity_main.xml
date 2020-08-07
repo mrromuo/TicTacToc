@@ -7,6 +7,7 @@
     android:orientation="vertical"
     android:background="@color/colorAccent"
     android:hapticFeedbackEnabled="false"
+    android:backgroundTint="@color/colorPrimaryDark"
     tools:context=".MainActivity">
 
     <TableRow
@@ -15,9 +16,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
-        <Space
-            android:layout_height="100dp"
-            android:layout_weight="1" />
+        <TextView
+            android:id="@+id/title1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:text="@string/app_name" />
     </TableRow>
 
     <TableRow
