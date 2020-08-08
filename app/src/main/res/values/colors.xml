@@ -12,4 +12,12 @@
     <color name="loging_registter_border">#6B212F</color>
     <color name="loging_login_bg">#64C678</color>
     <color name="loging_login_border">#0C640A</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorwhite">#FFFFFF</color>
+    <color name="colorBlue">#0000FF</color>
+    <color name="colorRed">#FF0000</color>
+    <color name="colorGreen">#00FF00</color>
+    <color name="colorYalow">#FFFF00</color>
+    <color name="colorBink">#FF00FF</color>
+    <color name="colorBrown">#FF8F0F</color>
 </resources>

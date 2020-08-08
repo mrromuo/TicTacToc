@@ -14,4 +14,11 @@
     <string name="player_name_hint">رائد منصور آل قصاب</string>
     <string name="sumbut_it">أرسـل</string>
 
+    <!-- Main Menu -->
+    <string name="bkgroind">الصورة الخلفية</string>
+    <string name="gmhistory">سجل اللعبة</string>
+    <string name="information">معلوماتك الشخصية</string>
+    <string name="gmandroid">العب مع اندرويد</string>
+    <string name="gmhuman">العب مع شخص آخر</string>
+
 </resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bakgnd"
+        android:title="@string/bkgroind"
+        android:icon="@android:drawable/ic_menu_gallery"/>
+    <item
+        android:id="@+id/newgm"
+        android:icon="@android:drawable/ic_menu_zoom"
+        android:title="@string/newGame" />
+    <group>
+        <item android:title="@string/gmhistory"
+            android:id="@+id/historygm"/>
+        <item android:title="@string/information"
+            android:id="@+id/info"/>
+    </group>
+
+    <group>
+        <item android:title="@string/gmandroid"
+            android:id="@+id/androidgm"/>
+        <item android:title="@string/gmhuman"
+            android:id="@+id/humangm"/>
+    </group>
+</menu>

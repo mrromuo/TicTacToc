@@ -52,6 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editPersonName"
         android:layout_margin="@dimen/Button_a_m"
+        android:background="@drawable/bourronsbk"
         android:text="@string/sumbut_it" />
 
     <Button
@@ -64,6 +65,7 @@
         android:layout_marginEnd="@dimen/Button_a_m"
         android:layout_marginBottom="@dimen/Button_a_m"
         android:layout_toEndOf="@+id/submit"
+        android:background="@drawable/bourronsbk"
         android:text="@android:string/cancel" />
 
 </RelativeLayout>
