@@ -14,12 +14,13 @@
             android:id="@+id/historygm"/>
         <item android:title="@string/information"
             android:id="@+id/info"/>
-    </group>
-
-    <group>
         <item android:title="@string/gmandroid"
             android:id="@+id/androidgm"/>
         <item android:title="@string/gmhuman"
             android:id="@+id/humangm"/>
     </group>
+    <item
+        android:id="@+id/help"
+        android:icon="@android:drawable/ic_menu_zoom"
+        android:title="@string/help" />
 </menu>
