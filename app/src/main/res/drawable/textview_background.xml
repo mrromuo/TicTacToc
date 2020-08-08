@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <padding android:bottom="@dimen/personphoto_pading" android:left="@dimen/personphoto_pading" android:right="@dimen/personphoto_pading" android:top="@dimen/personphoto_pading"/>
+    <solid android:color="@color/loging_gray_bg"/>
+    <stroke android:width="2dp" android:color="@color/loging_gray_border" android:dashWidth="2dp" />
+    <corners android:radius="10dp"/>
+</shape>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bk07"
+    tools:context=".person">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="@dimen/personphoto_wigth"
+        android:layout_height="@dimen/personphoto_hight"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/personphoto_layout_marginTop"
+        android:background="@drawable/photobackground"
+        tools:srcCompat="@drawable/test" />
+
+    <TextView
+        android:id="@+id/personname"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_hight"
+        android:layout_below="@+id/imageView"
+        android:background="@drawable/textview_background"
+        android:gravity="center"
+        android:layout_margin="8dp"
+        android:textSize="@dimen/sub_text_size"
+        android:text="@string/player_name"
+        />
+
+    <EditText
+        android:id="@+id/editPersonName"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_hight"
+        android:layout_below="@+id/personname"
+        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/textview_background"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/player_name_hint"
+        android:inputType="textPersonName"
+        android:textSize="@dimen/sub_text_size" />
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editPersonName"
+        android:layout_margin="@dimen/Button_a_m"
+        android:text="@string/sumbut_it" />
+
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editPersonName"
+        android:layout_marginStart="@dimen/Button_a_m"
+        android:layout_marginTop="@dimen/Button_a_m"
+        android:layout_marginEnd="@dimen/Button_a_m"
+        android:layout_marginBottom="@dimen/Button_a_m"
+        android:layout_toEndOf="@+id/submit"
+        android:text="@android:string/cancel" />
+
+</RelativeLayout>

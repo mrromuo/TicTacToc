@@ -10,4 +10,8 @@
     <string name="player2">الاعب الثاني</string>
     <string name="player1win">فاز اللاعب الأول</string>
     <string name="player2win">فاز اللاعب الثاني</string>
+    <string name="player_name">اكتب اسمك بالاسفل</string>
+    <string name="player_name_hint">رائد منصور آل قصاب</string>
+    <string name="sumbut_it">أرسـل</string>
+
 </resources>

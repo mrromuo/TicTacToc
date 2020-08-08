@@ -8,5 +8,16 @@
 
     <!-- text sizes -->
     <dimen name="titel_text_size">48sp</dimen>
-    <dimen name="sub_text_size">30sp</dimen>
+    <dimen name="sub_text_size">24sp</dimen>
+
+    <!-- photos -->
+    <dimen name="personphoto_hight">350dp</dimen>
+    <dimen name="personphoto_wigth">315dp</dimen>
+    <dimen name="personphoto_layout_marginTop">25dp</dimen>
+    <dimen name="personphoto_pading">16dp</dimen>
+
+    <!-- person view text sizes -->
+    <dimen name="text_hight">60dp</dimen>
+    <dimen name="text_wigth">300dp</dimen>
+    <dimen name="text_m">8dp</dimen>
 </resources>

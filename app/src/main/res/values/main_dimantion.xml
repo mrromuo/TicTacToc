@@ -7,8 +7,20 @@
     <dimen name="Button_a_m">5dp</dimen>
     <dimen name="Button_b_hight">40dp</dimen>
 
-    <!-- text sizes -->
+    <!-- main view text sizes -->
     <dimen name="titel_text_size">24sp</dimen>
     <dimen name="sub_text_size">16sp</dimen>
+
+    <!-- photos -->
+    <dimen name="personphoto_hight">200dp</dimen>
+    <dimen name="personphoto_wigth">180dp</dimen>
+    <dimen name="personphoto_layout_marginTop">15dp</dimen>
+    <dimen name="personphoto_pading">8dp</dimen>
+
+    <!-- person view text sizes -->
+    <dimen name="text_hight">40dp</dimen>
+    <dimen name="text_wigth">200dp</dimen>
+    <dimen name="text_m">5dp</dimen>
+
 
 </resources>
