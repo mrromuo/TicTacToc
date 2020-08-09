@@ -2,17 +2,20 @@ package com.raeed.tictactoc;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
     public static final String MAIN_PLAYER ="main_name";
@@ -20,17 +23,30 @@ public class MainActivity extends AppCompatActivity {
     public static final int PERSON_INFO_REQUEST = 1;
     public static String MAIN_PLAYER_V ;
     public static String MAIN_PLAYER_NAME ;
-    TextView player1;
-
+    TextView player1,player2;
+    Button but1,but2,but3,but4,but5,but6,but7,but8,but9,rest;
     SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         player1 = findViewById(R.id.player1);
+        player2 = findViewById(R.id.player2);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = sharedPreferences.edit();
         isNameVailable();
-        
+        but1 = findViewById(R.id.bu1);
+        but2 = findViewById(R.id.bu2);
+        but3 = findViewById(R.id.bu3);
+        but4 = findViewById(R.id.bu4);
+        but5 = findViewById(R.id.bu5);
+        but6 = findViewById(R.id.bu6);
+        but7 = findViewById(R.id.bu7);
+        but8 = findViewById(R.id.bu8);
+        but9 = findViewById(R.id.bu9);
+        rest = findViewById(R.id.reset);
+
     }
     private void isNameVailable () {
         MAIN_PLAYER_V = sharedPreferences.getString(MAIN_PLAYER,NOT_YET);
@@ -46,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK & requestCode == PERSON_INFO_REQUEST ){
             MAIN_PLAYER_NAME =data.getStringExtra(MAIN_PLAYER);
             player1.setText(MAIN_PLAYER_NAME);
+            editor.putString(MAIN_PLAYER,MAIN_PLAYER_NAME);
+            editor.apply();
         } else { if (resultCode == RESULT_CANCELED & requestCode == PERSON_INFO_REQUEST ){
             player1.setText(R.string.player1);
             }
@@ -95,5 +113,20 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    private class humangame{
+        void onClick(View view){
+            switch (view.getId()){
+                case R.id.bu1:
+                    but1.setBackgroundColor(getResources().getColor(R.color.image_backgroind_o));
+                    but1.setText("o");
+                    break;
+                case R.id.bu2:
+                    but2.setBackgroundColor(getResources().getColor(R.color.image_backgroind_o));
+                    but2.setText("o");
+                    break;
+            }
+        }
     }
 }
