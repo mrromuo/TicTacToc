@@ -59,31 +59,34 @@
             android:layout_height="wrap_content"
             android:gravity="center">
 
-            <Button
+            <ImageButton
                 android:id="@+id/bu1"
                 android:layout_width="@dimen/Buttom_a_wigth"
                 android:layout_height="@dimen/Buttom_a_hight"
                 android:layout_margin="@dimen/Button_a_m"
                 android:background="#FFFFFF"
                 android:textAlignment="center"
+                android:onClick="butclicked"
                 android:textSize="24sp" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/bu2"
                 android:layout_width="@dimen/Buttom_a_wigth"
                 android:layout_height="@dimen/Buttom_a_hight"
                 android:layout_margin="@dimen/Button_a_m"
                 android:background="#FFFFFF"
                 android:textAlignment="center"
+                android:onClick="butclicked"
                 android:textSize="24sp" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/bu3"
                 android:layout_width="@dimen/Buttom_a_wigth"
                 android:layout_height="@dimen/Buttom_a_hight"
                 android:layout_margin="@dimen/Button_a_m"
                 android:background="#FFFFFF"
                 android:textAlignment="center"
+                android:onClick="butclicked"
                 android:textSize="24sp" />
         </TableRow>
 
@@ -93,31 +96,34 @@
             android:layout_height="match_parent"
             android:gravity="center">
 
-            <Button
+            <ImageButton
                 android:id="@+id/bu4"
                 android:layout_width="@dimen/Buttom_a_wigth"
                 android:layout_height="@dimen/Buttom_a_hight"
                 android:layout_margin="@dimen/Button_a_m"
                 android:background="#FFFFFF"
                 android:textAlignment="center"
+                android:onClick="butclicked"
                 android:textSize="24sp" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/bu5"
                 android:layout_width="@dimen/Buttom_a_wigth"
                 android:layout_height="@dimen/Buttom_a_hight"
                 android:layout_margin="@dimen/Button_a_m"
                 android:background="#FFFFFF"
                 android:textAlignment="center"
+                android:onClick="butclicked"
                 android:textSize="24sp" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/bu6"
                 android:layout_width="@dimen/Buttom_a_wigth"
                 android:layout_height="@dimen/Buttom_a_hight"
                 android:layout_margin="@dimen/Button_a_m"
                 android:background="#FFFFFF"
                 android:textAlignment="center"
+                android:onClick="butclicked"
                 android:textSize="24sp" />
         </TableRow>
 
@@ -127,31 +133,34 @@
             android:layout_height="match_parent"
             android:gravity="center">
 
-            <Button
+            <ImageButton
                 android:id="@+id/bu7"
                 android:layout_width="@dimen/Buttom_a_wigth"
                 android:layout_height="@dimen/Buttom_a_hight"
                 android:layout_margin="@dimen/Button_a_m"
                 android:background="#FFFFFF"
                 android:textAlignment="center"
+                android:onClick="butclicked"
                 android:textSize="24sp" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/bu8"
                 android:layout_width="@dimen/Buttom_a_wigth"
                 android:layout_height="@dimen/Buttom_a_hight"
                 android:layout_margin="@dimen/Button_a_m"
                 android:background="#FFFFFF"
                 android:textAlignment="center"
+                android:onClick="butclicked"
                 android:textSize="24sp" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/bu9"
                 android:layout_width="@dimen/Buttom_a_wigth"
                 android:layout_height="@dimen/Buttom_a_hight"
                 android:layout_margin="@dimen/Button_a_m"
                 android:background="#FFFFFF"
                 android:textAlignment="center"
+                android:onClick="butclicked"
                 android:textSize="24sp" />
 
         </TableRow>
