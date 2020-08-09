@@ -135,11 +135,13 @@ public class MainActivity extends AppCompatActivity {
         else {
             gamesequence=0;
             SIMPLE_X_OR_O_color = X_samble_color;
-            playersimple=(R.drawable.x01);;}
+            playersimple=(R.drawable.x);;}
         switch (view.getId()) {
             case R.id.bu1:
                 but1.setBackgroundColor(getResources().getColor(SIMPLE_X_OR_O_color));
                 but1.setImageResource(playersimple);
+                but1.setClickable(false);
+
                 break;
             case R.id.bu2:
                 but2.setBackgroundColor(getResources().getColor(SIMPLE_X_OR_O_color));

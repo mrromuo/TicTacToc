@@ -2,6 +2,7 @@ package com.raeed.tictactoc;
 
 public class GameJudge {
 
+
     public boolean iswin(boolean isA,boolean isB,boolean isC,boolean isD,boolean isE,boolean isF,boolean isG,boolean isH,boolean isI){
         boolean isW=false;
         if (isA & isB & isC) {
