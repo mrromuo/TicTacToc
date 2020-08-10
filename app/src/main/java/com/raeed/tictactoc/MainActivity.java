@@ -16,7 +16,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.util.Set;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     public static final String MAIN_PLAYER ="main_name";
@@ -28,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
     public static String MAIN_PLAYER_V ;
     public static String MAIN_PLAYER_NAME ;
     public static int gamesequence;
+    public static ArrayList<Boolean> PLAYER1_ST = new ArrayList<>();
+    public static ArrayList<Boolean> PLAYER2_ST = new ArrayList<>();
+
     TextView player1,player2;
     ImageButton but1,but2,but3,but4,but5,but6,but7,but8,but9;
     Button rest;
@@ -136,46 +140,12 @@ public class MainActivity extends AppCompatActivity {
             gamesequence=0;
             SIMPLE_X_OR_O_color = X_samble_color;
             playersimple=(R.drawable.x);;}
-        switch (view.getId()) {
-            case R.id.bu1:
-                but1.setBackgroundColor(getResources().getColor(SIMPLE_X_OR_O_color));
-                but1.setImageResource(playersimple);
-                but1.setClickable(false);
+        int but=view.getId();
+        ImageButton presdBut=findViewById(but);
+        presdBut.setBackgroundColor(getResources().getColor(SIMPLE_X_OR_O_color,getBaseContext().getTheme()));
+        presdBut.setImageResource(playersimple);
+        presdBut.setClickable(false);
 
-                break;
-            case R.id.bu2:
-                but2.setBackgroundColor(getResources().getColor(SIMPLE_X_OR_O_color));
-                but2.setImageResource(playersimple);
-                break;
-            case R.id.bu3:
-                but3.setBackgroundColor(getResources().getColor(SIMPLE_X_OR_O_color));
-                but3.setImageResource(playersimple);
-                break;
-            case R.id.bu4:
-                but4.setBackgroundColor(getResources().getColor(SIMPLE_X_OR_O_color));
-                but4.setImageResource(playersimple);
-                break;
-            case R.id.bu5:
-                but5.setBackgroundColor(getResources().getColor(SIMPLE_X_OR_O_color));
-                but5.setImageResource(playersimple);
-                break;
-            case R.id.bu6:
-                but6.setBackgroundColor(getResources().getColor(SIMPLE_X_OR_O_color));
-                but6.setImageResource(playersimple);
-                break;
-            case R.id.bu7:
-                but7.setBackgroundColor(getResources().getColor(SIMPLE_X_OR_O_color));
-                but7.setImageResource(playersimple);
-                break;
-            case R.id.bu8:
-                but8.setBackgroundColor(getResources().getColor(SIMPLE_X_OR_O_color));
-                but8.setImageResource(playersimple);
-                break;
-            case R.id.bu9:
-                but9.setBackgroundColor(getResources().getColor(SIMPLE_X_OR_O_color));
-                but9.setImageResource(playersimple);
-                break;
-        }
         editor.putInt(GAME_SQ_KEY,gamesequence);
         editor.apply();
     }
