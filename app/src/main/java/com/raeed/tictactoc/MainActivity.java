@@ -17,23 +17,22 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
     public static final String MAIN_PLAYER ="main_name";
     public static final String NOT_YET ="NoName";
     public static final String GAME_SQ_KEY ="gmaesq";
+    public static final String GAME_QOUNT_KEY ="gmqounter";
+    public static final String GAME_ANDROID_KEY ="gmandroid";
     public static final int PERSON_INFO_REQUEST = 1;
     public static final int  O_samble_color= (R.color.image_backgroind_o);
     public static final int X_samble_color = (R.color.image_backgroind_x);
     public static String MAIN_PLAYER_V ;
     public static String MAIN_PLAYER_NAME ;
-    public static int gamesequence;
-    public static ArrayList<Boolean> PLAYER1_ST = new ArrayList<>();
-    public static ArrayList<Boolean> PLAYER2_ST = new ArrayList<>();
-
+    public static int gamesequence,GameCounter;
+    public static boolean PLAYER1_ST,PLAYER2_ST ,GAME_ANDROID;
+    public static boolean[][] GAME_BOARD =new boolean[2][9];
+    int[] kyMap ={R.id.bu1,R.id.bu2,R.id.bu3,R.id.bu4,R.id.bu5,R.id.bu6,R.id.bu7,R.id.bu8,R.id.bu9};
     TextView player1,player2;
-    ImageButton but1,but2,but3,but4,but5,but6,but7,but8,but9;
     Button rest;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -46,16 +45,14 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = sharedPreferences.edit();
         isNameVailable();
-        but1 = findViewById(R.id.bu1);
-        but2 = findViewById(R.id.bu2);
-        but3 = findViewById(R.id.bu3);
-        but4 = findViewById(R.id.bu4);
-        but5 = findViewById(R.id.bu5);
-        but6 = findViewById(R.id.bu6);
-        but7 = findViewById(R.id.bu7);
-        but8 = findViewById(R.id.bu8);
-        but9 = findViewById(R.id.bu9);
+
         rest = findViewById(R.id.reset);
+        rest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetgame();
+            }
+        });
 
     }
     private void isNameVailable () {
@@ -66,7 +63,9 @@ public class MainActivity extends AppCompatActivity {
             editor.apply();
             Intent infoperson =new Intent(getBaseContext(),person.class);
             startActivityForResult(infoperson,PERSON_INFO_REQUEST);
-        } else {player1.setText(MAIN_PLAYER_V);}
+        } else {
+            player1.setText(MAIN_PLAYER_V);
+            MAIN_PLAYER_NAME = MAIN_PLAYER_V;}
     }
 
     @Override
@@ -132,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         gamesequence =  sharedPreferences.getInt(GAME_SQ_KEY,0);
         int SIMPLE_X_OR_O_color;
         int playersimple=0;
+        GameCounter ++;
         if (gamesequence==0){
             gamesequence=1;
             SIMPLE_X_OR_O_color = O_samble_color;
@@ -140,13 +140,107 @@ public class MainActivity extends AppCompatActivity {
             gamesequence=0;
             SIMPLE_X_OR_O_color = X_samble_color;
             playersimple=(R.drawable.x);;}
-        int but=view.getId();
-        ImageButton presdBut=findViewById(but);
-        presdBut.setBackgroundColor(getResources().getColor(SIMPLE_X_OR_O_color,getBaseContext().getTheme()));
-        presdBut.setImageResource(playersimple);
-        presdBut.setClickable(false);
-
+        if (GameCounter < 10) {
+            int but = view.getId();
+            ImageButton presdBut = findViewById(but);
+            presdBut.setBackgroundColor(getResources().getColor(SIMPLE_X_OR_O_color, getBaseContext().getTheme()));
+            presdBut.setImageResource(playersimple);
+            presdBut.setClickable(false);
+            switch (but) {
+                case R.id.bu1:
+                    GAME_BOARD[gamesequence][0] = true;
+                    editor.putBoolean("s0", true);
+                    break;
+                case R.id.bu2:
+                    GAME_BOARD[gamesequence][1] = true;
+                    editor.putBoolean("s1", true);
+                    break;
+                case R.id.bu3:
+                    GAME_BOARD[gamesequence][2] = true;
+                    editor.putBoolean("s2", true);
+                    break;
+                case R.id.bu4:
+                    GAME_BOARD[gamesequence][3] = true;
+                    editor.putBoolean("s3", true);
+                    break;
+                case R.id.bu5:
+                    GAME_BOARD[gamesequence][4] = true;
+                    editor.putBoolean("s4", true);
+                    break;
+                case R.id.bu6:
+                    GAME_BOARD[gamesequence][5] = true;
+                    editor.putBoolean("s5", true);
+                    break;
+                case R.id.bu7:
+                    GAME_BOARD[gamesequence][6] = true;
+                    editor.putBoolean("s6", true);
+                    break;
+                case R.id.bu8:
+                    GAME_BOARD[gamesequence][7] = true;
+                    editor.putBoolean("s7", true);
+                    break;
+                case R.id.bu9:
+                    GAME_BOARD[gamesequence][8] = true;
+                    editor.putBoolean("s8", true);
+                    break;
+            }
+            // find winner
+            String winner;
+            int x = 0;
+            int s = 0;
+            int secdS[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 4, 8, 0, 3, 6, 1, 4, 7, 2, 5, 8, 6, 4, 2};
+            do {
+                PLAYER2_ST = GAME_BOARD[0][secdS[s]] & GAME_BOARD[0][secdS[s + 1]] & GAME_BOARD[0][secdS[s + 2]];
+                PLAYER1_ST = GAME_BOARD[1][secdS[s]] & GAME_BOARD[1][secdS[s + 1]] & GAME_BOARD[1][secdS[s + 2]];
+                if (PLAYER1_ST) {
+                    winner = "A is winner";
+                    GameCounter =10;
+                    winner(1);
+                    break;
+                } else if (PLAYER2_ST) {
+                    GameCounter =10;
+                    winner = "B is winner";
+                    winner(2);
+                    break;
+                } else winner = "Draw";
+                s += 3;
+                x++;
+            } while (x < 8);
+        }
         editor.putInt(GAME_SQ_KEY,gamesequence);
+        editor.putInt(GAME_QOUNT_KEY,GameCounter);
         editor.apply();
+    }
+
+    private void resetgame(){
+        String sX[] = {"s0","s1","s2","s3","s4","s5","s6","s7","s8"};
+        int x=0;
+        do{
+            for(int i =0;i<9;i++)GAME_BOARD[x][i]=false;
+            x++;
+        }while (x<2);
+        gamesequence=0;
+        GameCounter=0;
+        for(int i =0;i<9;i++){
+            ImageButton button=findViewById(kyMap[i]);
+            button.setBackgroundColor(getResources().getColor(R.color.colorwhite,getBaseContext().getTheme()));
+            button.setImageResource(0);
+            button.setClickable(true);
+            editor.putBoolean(sX[i],false);}
+        editor.putInt(GAME_SQ_KEY,gamesequence);
+        editor.putInt(GAME_QOUNT_KEY,GameCounter);
+        editor.apply();
+    }
+
+    // winner announcement
+    private void winner(int playerId){
+        String p1=getText(R.string.player1win).toString()+ " " + MAIN_PLAYER_NAME;
+        String p2=getText(R.string.player2win).toString();
+        if (playerId == 1){
+            Toast.makeText(getBaseContext(),p1,Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getBaseContext(),p2,Toast.LENGTH_LONG).show();
+        }
+        // TODO Make activity for winner announcement
     }
 }

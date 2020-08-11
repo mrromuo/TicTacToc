@@ -19,4 +19,6 @@
     <string name="gmandroid">Play with android</string>
     <string name="gmhuman">Play with Human</string>
     <string name="help">Help</string>
+
+    <!-- Game Messages -->
 </resources>
