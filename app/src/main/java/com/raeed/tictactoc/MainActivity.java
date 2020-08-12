@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void butclicked(View view) {
+        // TODO make sprouted auto replay game with Android
         gamesequence =  sharedPreferences.getInt(GAME_SQ_KEY,0);
         int SIMPLE_X_OR_O_color;
         int playersimple=0;
