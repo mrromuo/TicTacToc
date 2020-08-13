@@ -10,6 +10,7 @@
     <string name="player2">الاعب الثاني</string>
     <string name="player1win">فاز اللاعب الأول</string>
     <string name="player2win">فاز اللاعب الثاني</string>
+    <string name="android">اندرويد</string>
     <string name="player_name">اكتب اسمك بالاسفل</string>
     <string name="player_name_hint">رائد منصور آل قصاب</string>
     <string name="sumbut_it">أرسـل</string>
@@ -21,5 +22,10 @@
     <string name="gmandroid">العب مع اندرويد</string>
     <string name="gmhuman">العب مع شخص آخر</string>
     <string name="help">مساعده</string>
+
+    <!-- رسائل التوست -->
+    <string name="newgame">اللعبة الجديدة قد بدأت الآن</string>
+    <string name="playwithAndroid">تم اختيار اللعب مع الكمبيوتر</string>
+    <string name="playwithHuman">تم اختيار اللعب مع شخص آخر</string>
 
 </resources>
