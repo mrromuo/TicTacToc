@@ -12,6 +12,7 @@
     <string name="player_name">Enter Your Name Below</string>
     <string name="player_name_hint">Raeed Mansour Al Gassab</string>
     <string name="sumbut_it">submit</string>
+    <string name="winerannoun">THE WINNER IS</string>
 
     <!-- Main Menu -->
     <string name="bkgroind">Background</string>

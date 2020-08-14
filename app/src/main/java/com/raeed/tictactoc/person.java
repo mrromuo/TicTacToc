@@ -25,7 +25,7 @@ public class person extends AppCompatActivity {
         imageView.setImageResource(R.drawable.test);
         newname = findViewById(R.id.editPersonName);
         save = findViewById(R.id.submit);
-        cancel = findViewById(R.id.cancel);
+        cancel = findViewById(R.id.ok);
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bk07"
-    tools:context=".person"
+    tools:context=".winnerannounc"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -43,7 +43,7 @@
             android:layout_marginBottom="8dp"
             android:background="@drawable/textview_background"
             android:gravity="center"
-            android:text="@string/player_name"
+            android:text="@string/winerannoun"
             android:textSize="@dimen/sub_text_size" />
 
         <EditText
@@ -57,23 +57,13 @@
             android:background="@drawable/textview_background"
             android:ems="10"
             android:gravity="center"
-            android:hint="@string/player_name_hint"
             android:inputType="textPersonName"
             android:textSize="@dimen/sub_text_size" />
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/submit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/Button_a_m"
-                android:layout_marginTop="@dimen/Button_a_m"
-                android:layout_marginEnd="@dimen/Button_a_m"
-                android:layout_marginBottom="@dimen/Button_a_m"
-                android:text="@string/sumbut_it" />
+            android:layout_height="wrap_content"
+            android:gravity="center">
 
             <Button
                 android:id="@+id/ok"
@@ -83,7 +73,7 @@
                 android:layout_marginTop="@dimen/Button_a_m"
                 android:layout_marginEnd="@dimen/Button_a_m"
                 android:layout_marginBottom="@dimen/Button_a_m"
-                android:text="@android:string/cancel" />
+                android:text="@android:string/ok" />
         </TableRow>
 
     </LinearLayout>

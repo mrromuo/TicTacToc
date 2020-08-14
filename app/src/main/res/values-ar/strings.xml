@@ -14,6 +14,7 @@
     <string name="player_name">اكتب اسمك بالاسفل</string>
     <string name="player_name_hint">رائد منصور آل قصاب</string>
     <string name="sumbut_it">أرسـل</string>
+    <string name="winerannoun">الفائز هو</string>
 
     <!-- Main Menu -->
     <string name="bkgroind">الصورة الخلفية</string>

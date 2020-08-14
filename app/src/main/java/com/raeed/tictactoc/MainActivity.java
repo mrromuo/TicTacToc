@@ -104,6 +104,10 @@ public class MainActivity extends AppCompatActivity {
                 toast3.show();
                 //todo making history activity link
                 return true;
+            case R.id.info:
+                Intent infoperson = new Intent(getBaseContext(), person.class);
+                startActivityForResult(infoperson, PERSON_INFO_REQUEST);
+                return true;
             case R.id.androidgm:
                 Toast toast4 = Toast.makeText(getBaseContext(), getText(R.string.playwithAndroid), Toast.LENGTH_LONG);
                 toast4.show();
