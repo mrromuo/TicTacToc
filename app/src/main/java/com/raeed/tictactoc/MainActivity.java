@@ -2,6 +2,11 @@ package com.raeed.tictactoc;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
@@ -13,10 +18,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import static com.raeed.tictactoc.gameseting.SONG_Key;
 
 public class MainActivity extends AppCompatActivity {
     public static final String MAIN_PLAYER = "main_name";
@@ -37,7 +42,11 @@ public class MainActivity extends AppCompatActivity {
     Button rest;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-
+    SharedPreferences ssPreferences;
+    SoundPool soundPool;
+    AudioAttributes audioAttributes;
+    int song_01,sound_a,sound_b;
+    MediaPlayer mediaPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +55,16 @@ public class MainActivity extends AppCompatActivity {
         player2 = findViewById(R.id.player2);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = sharedPreferences.edit();
-        isNameVailable();
+        ssPreferences=getSharedPreferences("settings",MODE_PRIVATE);
+        boolean issong=ssPreferences.getBoolean(SONG_Key,true);
+        mediaPlayer=MediaPlayer.create(MainActivity.this,R.raw.playtime01);
+        //if (issong) mediaPlayer.start();
 
+        isNameVailable();
+        //play_song();
+        //soundPool.play(song_01,1.0f,1.0f,1,0,1.0f);
+        //soundPool.autoPause();
+        playIT();
         rest = findViewById(R.id.reset);
         rest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +74,48 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+    public void play_song(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+             //audioAttributes =new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).build();
+              audioAttributes= new AudioAttributes.Builder()
+                      .setUsage(AudioAttributes.USAGE_GAME)
+                      .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                      .build();
+            soundPool= new SoundPool.Builder().setMaxStreams(3).setAudioAttributes(audioAttributes).build();
+        }else {
+            soundPool = new SoundPool(3, AudioManager.STREAM_MUSIC,0);
+        }
+        Toast.makeText(getBaseContext(),"Song try to play",Toast.LENGTH_LONG).show();
+        song_01=soundPool.load(MainActivity.this,R.raw.playtime01,1);
+        //song_01=soundPool.load(MainActivity.this,R.raw.playtime02,1);
+        sound_a=soundPool.load(MainActivity.this,R.raw.sadend01,2);
+        sound_b=soundPool.load(MainActivity.this,R.raw.winner01,3);
+
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(mediaPlayer != null) mediaPlayer.release();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopIT();
+    }
+    public void playIT(){
+        if (mediaPlayer != null) mediaPlayer = MediaPlayer.create(getBaseContext(),R.raw.playtime01);
+        mediaPlayer.start();
+        Toast.makeText(getBaseContext(),"STARTED",Toast.LENGTH_LONG).show();
+    }
+    public void stopIT(){
+        if (mediaPlayer != null) mediaPlayer.release();
+        mediaPlayer=null;
+        Toast.makeText(getBaseContext(),"S T O P E D",Toast.LENGTH_LONG).show();
+    }
+
 
     private void isNameVailable() {
         MAIN_PLAYER_V = sharedPreferences.getString(MAIN_PLAYER, NOT_YET);
