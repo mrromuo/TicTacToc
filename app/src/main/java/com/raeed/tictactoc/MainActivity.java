@@ -47,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
     AudioAttributes audioAttributes;
     int song_01,sound_a,sound_b;
     MediaPlayer mediaPlayer;
+    MediaPlayer sadendsong;
+    MediaPlayer happysong;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,13 +61,17 @@ public class MainActivity extends AppCompatActivity {
         ssPreferences=getSharedPreferences("settings",MODE_PRIVATE);
         boolean issong=ssPreferences.getBoolean(SONG_Key,true);
         mediaPlayer=MediaPlayer.create(MainActivity.this,R.raw.playtime01);
+        sadendsong=MediaPlayer.create(this,R.raw.sadend01);
+        happysong=MediaPlayer.create(this,R.raw.yaybaby);
+        if (issong) playIT();
         //if (issong) mediaPlayer.start();
 
         isNameVailable();
         //play_song();
         //soundPool.play(song_01,1.0f,1.0f,1,0,1.0f);
         //soundPool.autoPause();
-        playIT();
+
+        // reset button:
         rest = findViewById(R.id.reset);
         rest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,6 +117,17 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayer.start();
         Toast.makeText(getBaseContext(),"STARTED",Toast.LENGTH_LONG).show();
     }
+    public void playsadend(){
+        if (sadendsong != null) sadendsong = MediaPlayer.create(getBaseContext(),R.raw.sadend01);
+        sadendsong.start();
+        Toast.makeText(getBaseContext(),"play",Toast.LENGTH_LONG).show();
+    }
+    public void playhappy(){
+        if (happysong != null) happysong = MediaPlayer.create(getBaseContext(),R.raw.yaybaby);
+        happysong.start();
+        Toast.makeText(getBaseContext(),"Happy winner!!",Toast.LENGTH_LONG).show();
+    }
+
     public void stopIT(){
         if (mediaPlayer != null) mediaPlayer.release();
         mediaPlayer=null;
@@ -287,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putInt(GAME_QOUNT_KEY, GameCounter);
         editor.apply();
     }
-
+    // game reset
     private void resetgame() {
         String sX[] = {"s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"};
         int x = 0;
@@ -307,6 +325,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putInt(GAME_SQ_KEY, gamesequence);
         editor.putInt(GAME_QOUNT_KEY, GameCounter);
         editor.apply();
+        playIT();
     }
 
     // winner announcement
@@ -314,8 +333,10 @@ public class MainActivity extends AppCompatActivity {
         String p1 = getText(R.string.player1win).toString() + " " + MAIN_PLAYER_NAME;
         String p2 = getText(R.string.player2win).toString();
         if (playerId == 1) {
+            playhappy();
             Toast.makeText(getBaseContext(), p1, Toast.LENGTH_LONG).show();
         } else {
+            playhappy();
             Toast.makeText(getBaseContext(), p2, Toast.LENGTH_LONG).show();
         }
         // TODO Make activity for winner announcement
