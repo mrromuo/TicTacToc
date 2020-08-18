@@ -29,4 +29,8 @@
     <string name="playwithAndroid">تم اختيار اللعب مع الكمبيوتر</string>
     <string name="playwithHuman">تم اختيار اللعب مع شخص آخر</string>
 
+    <!--صفحة الإعدادات -->
+    <string name="setting_Titel">الإعدادات</string>
+    <string name="song">مسيقى الخلفية إطفاء/تشغيل</string>
+
 </resources>

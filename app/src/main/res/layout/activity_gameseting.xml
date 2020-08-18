@@ -1,9 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:scrollY="@dimen/Button_a_m"
+    android:fadeScrollbars="true"
     tools:context=".gameseting">
+    <TextView
+        android:id="@+id/titleView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_hight"
+        android:gravity="center"
+        android:text="@string/setting_Titel"
+        android:textSize="@dimen/titel_text_size" />
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/titleView">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RadioGroup
+            android:id="@+id/radiogroup01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/personphoto_pading">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <RadioButton
+                android:id="@+id/radioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="RadioButton" />
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="RadioButton" />
+
+            <RadioButton
+                android:id="@+id/radioButton3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="RadioButton" />
+
+            <Switch
+                android:id="@+id/switch1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/song" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/radiogroup02"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/radiogroup01"
+            android:padding="@dimen/personphoto_pading">
+
+            <RadioButton
+                android:id="@+id/radioButtonx1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/x" />
+
+            <RadioButton
+                android:id="@+id/radioButtonx2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/x01" />
+
+            <RadioButton
+                android:id="@+id/radioButtonx3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@android:drawable/ic_delete" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/radiogroup03"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/radiogroup02"
+            android:padding="@dimen/personphoto_pading">
+
+            <RadioButton
+                android:id="@+id/radioButtono1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/o" />
+
+            <RadioButton
+                android:id="@+id/radioButtono2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/o"/>
+
+            <RadioButton
+                android:id="@+id/radioButtono3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/o"/>
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/radiogroup04"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/radiogroup03"
+            android:padding="@dimen/personphoto_pading">
+
+            <RadioButton
+                android:id="@+id/backG1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/o" />
+
+            <RadioButton
+                android:id="@+id/backG2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/o"/>
+
+            <RadioButton
+                android:id="@+id/backG3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/o"/>
+        </RadioGroup>
+    </RelativeLayout>
+
+</ScrollView>
+
+
+
+
+</RelativeLayout>

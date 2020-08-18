@@ -20,6 +20,10 @@
             android:id="@+id/humangm"/>
     </group>
     <item
+        android:id="@+id/settingactivity"
+        android:icon="@android:drawable/ic_menu_zoom"
+        android:title="@string/setting_Titel" />
+    <item
         android:id="@+id/help"
         android:icon="@android:drawable/ic_menu_zoom"
         android:title="@string/help" />

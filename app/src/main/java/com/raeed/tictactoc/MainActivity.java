@@ -43,9 +43,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     SharedPreferences ssPreferences;
-    SoundPool soundPool;
-    AudioAttributes audioAttributes;
-    int song_01,sound_a,sound_b;
+
     MediaPlayer mediaPlayer;
     MediaPlayer sadendsong;
     MediaPlayer happysong;
@@ -63,15 +61,11 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayer=MediaPlayer.create(MainActivity.this,R.raw.playtime01);
         sadendsong=MediaPlayer.create(this,R.raw.sadend01);
         happysong=MediaPlayer.create(this,R.raw.yaybaby);
+
         if (issong) playIT();
         //if (issong) mediaPlayer.start();
 
         isNameVailable();
-        //play_song();
-        //soundPool.play(song_01,1.0f,1.0f,1,0,1.0f);
-        //soundPool.autoPause();
-
-        // reset button:
         rest = findViewById(R.id.reset);
         rest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,31 +75,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-    public void play_song(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-             //audioAttributes =new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).build();
-              audioAttributes= new AudioAttributes.Builder()
-                      .setUsage(AudioAttributes.USAGE_GAME)
-                      .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                      .build();
-            soundPool= new SoundPool.Builder().setMaxStreams(3).setAudioAttributes(audioAttributes).build();
-        }else {
-            soundPool = new SoundPool(3, AudioManager.STREAM_MUSIC,0);
-        }
-        Toast.makeText(getBaseContext(),"Song try to play",Toast.LENGTH_LONG).show();
-        song_01=soundPool.load(MainActivity.this,R.raw.playtime01,1);
-        //song_01=soundPool.load(MainActivity.this,R.raw.playtime02,1);
-        sound_a=soundPool.load(MainActivity.this,R.raw.sadend01,2);
-        sound_b=soundPool.load(MainActivity.this,R.raw.winner01,3);
-
-    }
-
 
     @Override
     protected void onPause() {
         super.onPause();
         if(mediaPlayer != null) mediaPlayer.release();
     }
+
+
 
     @Override
     protected void onDestroy() {
@@ -127,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
         happysong.start();
         Toast.makeText(getBaseContext(),"Happy winner!!",Toast.LENGTH_LONG).show();
     }
-
     public void stopIT(){
         if (mediaPlayer != null) mediaPlayer.release();
         mediaPlayer=null;
@@ -194,11 +170,13 @@ public class MainActivity extends AppCompatActivity {
                 GAME_ANDROID=false;
                 Toast.makeText(getBaseContext(), getText(R.string.playwithHuman), Toast.LENGTH_LONG).show();
                 return true;
-            case R.id.help:
-                Toast toast6 = Toast.makeText(getBaseContext(), "help activity", Toast.LENGTH_LONG);
-                toast6.show();
-                //Todo play with human class
+            case R.id.settingactivity:
+                Intent intentset=new Intent(getBaseContext(),gameseting.class);
+                startActivity(intentset);
                 return true;
+            case R.id.help:
+                Intent intenthlp=new Intent(getBaseContext(),helpp.class);
+                startActivity(intenthlp);
             default:
                 return super.onOptionsItemSelected(item);
         }
