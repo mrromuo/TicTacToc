@@ -171,9 +171,8 @@ public class MainActivity extends AppCompatActivity {
                 //backgroundChanger();
                 return true;
             case R.id.historygm:
-                Toast toast3 = Toast.makeText(getBaseContext(), "making history activity link", Toast.LENGTH_LONG);
-                toast3.show();
-                //todo making history activity link
+                Intent intentHist =new Intent(getBaseContext(),gamehistory.class);
+                startActivity(intentHist);
                 return true;
             case R.id.info:
                 Intent infoperson = new Intent(getBaseContext(), person.class);
