@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import static com.raeed.tictactoc.gameseting.SONG_Key;
@@ -39,13 +40,13 @@ public class MainActivity extends AppCompatActivity {
     public static String MAIN_PLAYER_V;
     public static String MAIN_PLAYER_NAME;
     public static String S_PLAYER_NAME;
-
+    public static ArrayList<HistoryArray> historyArray =new ArrayList<>();
+    public static int HISTORY_INDEX;
     public static int gamesequence, GameCounter;
     Random random = new Random();
     int keyselected;
     public static boolean PLAYER1_ST, PLAYER2_ST, GAME_ANDROID;
     public static boolean[][] GAME_BOARD = new boolean[2][9];
-
     int[] kyMap = {R.id.bu1, R.id.bu2, R.id.bu3, R.id.bu4, R.id.bu5, R.id.bu6, R.id.bu7, R.id.bu8, R.id.bu9};
     TextView player1, player2;
     Button rest;
@@ -58,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer happysong;
     // setting
     public static boolean issong;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -345,8 +345,9 @@ public class MainActivity extends AppCompatActivity {
 
     // winner announcement
     private void winner(int playerId) {
+
         String p1 = getText(R.string.player1win).toString() + " " + MAIN_PLAYER_NAME;
-        String p2 = getText(R.string.player2win).toString();
+        String p2 = getText(R.string.player2win).toString() + " " + S_PLAYER_NAME;
         if (playerId == 1) {
             playhappy();
             Toast.makeText(getBaseContext(), p1, Toast.LENGTH_LONG).show();
@@ -354,7 +355,9 @@ public class MainActivity extends AppCompatActivity {
             playhappy();
             Toast.makeText(getBaseContext(), p2, Toast.LENGTH_LONG).show();
         }
-        // TODO Make activity for winner announcement
+        HistoryArray neitem=new HistoryArray(p1,p2,playerId);
+        historyArray.add(HISTORY_INDEX,neitem);
+        HISTORY_INDEX++;
     }
 
     @Override
