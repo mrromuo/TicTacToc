@@ -492,11 +492,20 @@ public class MainActivity extends AppCompatActivity {
                 fbut.add(kyMap[i]);
             }
         }
-        if (! newbord[4]){
+       if (! newbord[4]){
             but = kyMap[4];
             return but;
         } else if (! newbord[0]){
             but = kyMap[0];
+            return but;
+        } else if (! newbord[2]){
+            but = kyMap[2];
+            return but;
+        } else if (! newbord[1]){
+            but = kyMap[1];
+            return but;
+        } else if (! newbord[6]){
+            but = kyMap[6];
             return but;
         } else {
             int d = fbut.size();
