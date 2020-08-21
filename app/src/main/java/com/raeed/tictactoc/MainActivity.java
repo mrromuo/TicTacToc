@@ -2,11 +2,7 @@ package com.raeed.tictactoc;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.AudioAttributes;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.SoundPool;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
@@ -44,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     public static int HISTORY_INDEX;
     public static int gamesequence, GameCounter;
     Random random = new Random();
-    int keyselected;
     public static boolean PLAYER1_ST, PLAYER2_ST, GAME_ANDROID;
     public static boolean[][] GAME_BOARD = new boolean[2][9];
     int[] kyMap = {R.id.bu1, R.id.bu2, R.id.bu3, R.id.bu4, R.id.bu5, R.id.bu6, R.id.bu7, R.id.bu8, R.id.bu9};
@@ -59,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer happysong;
     // setting
     public static boolean issong;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,43 +86,35 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
     @Override
     protected void onPause() {
         super.onPause();
         if (mediaPlayer != null) mediaPlayer.release();
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         stopIT();
     }
-
     public void playIT() {
         if (mediaPlayer != null)
             mediaPlayer = MediaPlayer.create(getBaseContext(), R.raw.playtime01);
         mediaPlayer.start();
     }
-
     public void playsadend() {
         if (sadendsong != null) sadendsong = MediaPlayer.create(getBaseContext(), R.raw.sadend01);
         sadendsong.start();
         Toast.makeText(getBaseContext(), "play", Toast.LENGTH_LONG).show();
     }
-
     public void playhappy() {
         if (happysong != null) happysong = MediaPlayer.create(getBaseContext(), R.raw.yaybaby);
         happysong.start();
         Toast.makeText(getBaseContext(), "Happy winner!!", Toast.LENGTH_LONG).show();
     }
-
     public void stopIT() {
         if (mediaPlayer != null) mediaPlayer.release();
         mediaPlayer = null;
     }
-
-
     private void isNameVailable() {
         MAIN_PLAYER_V = sharedPreferences.getString(MAIN_PLAYER, NOT_YET);
         if (MAIN_PLAYER_V == NOT_YET) {
@@ -142,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
             MAIN_PLAYER_NAME = MAIN_PLAYER_V;
         }
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -157,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
@@ -204,14 +188,12 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         return true;
     }
-
     public void butclicked(View view) {
         gamesequence = sharedPreferences.getInt(GAME_SQ_KEY, 0);
         int SIMPLE_X_OR_O_color;
@@ -239,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
             presdBut.setBackgroundColor(getResources().getColor(SIMPLE_X_OR_O_color, getBaseContext().getTheme()));
             presdBut.setImageResource(playersimple);
             presdBut.setClickable(false);
-
             // users buttons click respond
             switch (but) {
                 case R.id.bu1:
@@ -288,8 +269,6 @@ public class MainActivity extends AppCompatActivity {
                     editor.putInt("xo8", gamesequence);
                     break;
             }
-
-
             // find winner
             String winner;
             int x = 0;
@@ -316,8 +295,6 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
         if (GAME_ANDROID &&  GameCounter < 10) androidply();
     }
-
-
     // game reset
     private void resetgame() {
         String sX[] = {"s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"};
@@ -341,31 +318,27 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayer.release();
         if (issong) playIT();
     }
-
     // winner announcement
     private void winner(int playerId) {
-
         String p1 = getText(R.string.player1win).toString() + " " + MAIN_PLAYER_NAME;
         String p2 = getText(R.string.player2win).toString() + " " + S_PLAYER_NAME;
         if (playerId == 1) {
             playhappy();
             Toast.makeText(getBaseContext(), p1, Toast.LENGTH_LONG).show();
         } else {
-            playhappy();
+            if (GAME_ANDROID)playsadend();else playhappy();
             Toast.makeText(getBaseContext(), p2, Toast.LENGTH_LONG).show();
         }
-        HistoryArray neitem=new HistoryArray(p1,p2,playerId);
+        HistoryArray neitem=new HistoryArray(MAIN_PLAYER_NAME,S_PLAYER_NAME,playerId);
         historyArray.add(HISTORY_INDEX,neitem);
         HISTORY_INDEX++;
     }
-
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
         outState.putInt(GAME_SQ_KEY, gamesequence);
         outState.putInt(GAME_QOUNT_KEY, GameCounter);
     }
-
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -396,7 +369,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
     private void androidply() {
         ImageButton androidbut;
         int but=butnum();
@@ -473,11 +445,9 @@ public class MainActivity extends AppCompatActivity {
             s += 3;
             x++;
         } while (x < 8);
-
         editor.putInt(GAME_SQ_KEY,gamesequence);
         editor.putInt(GAME_QOUNT_KEY,GameCounter);
         editor.apply();
-
     }
     private int butnum() {
         ArrayList<Integer> fbut = new ArrayList<>();
