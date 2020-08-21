@@ -326,7 +326,7 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < 9; i++) GAME_BOARD[x][i] = false;
             x++;
         } while (x < 2);
-        gamesequence = 0;
+        gamesequence = 1;
         GameCounter = 0;
         for (int i = 0; i < 9; i++) {
             ImageButton button = findViewById(kyMap[i]);
@@ -399,20 +399,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void androidply() {
         ImageButton androidbut;
-        int stel = 9 - GameCounter;
-        int SlByAndroid = random.nextInt(stel);
-
-        for (int i = 0; i < 9; i++) {
-            androidbut = findViewById(kyMap[i]);
-            if (androidbut.isClickable()) SlByAndroid -= 1;
-            if (SlByAndroid == 0) {
-                keyselected = i;
-                break;
-            }
-        }
+        int but=butnum();
         GameCounter++;
         gamesequence=0;
-        int but =kyMap[keyselected];
         androidbut = findViewById(but);
         androidbut.setBackgroundColor(getResources().getColor(R.color.image_backgroind_x, getBaseContext().getTheme()));
         androidbut.setImageResource(R.drawable.x);
@@ -489,5 +478,31 @@ public class MainActivity extends AppCompatActivity {
         editor.putInt(GAME_QOUNT_KEY,GameCounter);
         editor.apply();
 
+    }
+    private int butnum() {
+        ArrayList<Integer> fbut = new ArrayList<>();
+        boolean[] newbord = new boolean[9];
+        for (int i = 0; i < 9; i++) newbord[i]=GAME_BOARD[0][i] || GAME_BOARD[1][i];
+        int x = 0;
+        int but = 0;
+        for (int i = 0; i < 9; i++) {
+            if (GAME_BOARD[0][i] || GAME_BOARD[1][i]) x++;
+            else {
+                x++;
+                fbut.add(kyMap[i]);
+            }
+        }
+        if (! newbord[4]){
+            but = kyMap[4];
+            return but;
+        } else if (! newbord[0]){
+            but = kyMap[0];
+            return but;
+        } else {
+            int d = fbut.size();
+            int h = random.nextInt(d);
+            but=fbut.get(h);
+        }
+        return but;
     }
 }
