@@ -21,6 +21,7 @@
             android:layout_width="@dimen/personphoto_wigth"
             android:layout_height="@dimen/personphoto_hight"
             android:layout_marginTop="@dimen/personphoto_layout_marginTop"
+            android:clickable="true"
             android:background="@drawable/photobackground"
             tools:srcCompat="@drawable/test" />
     </LinearLayout>

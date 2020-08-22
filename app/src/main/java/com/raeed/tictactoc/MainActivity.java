@@ -17,10 +17,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.ArrayList;
 import java.util.Random;
-
 import static com.raeed.tictactoc.gameseting.SONG_Key;
 
 public class MainActivity extends AppCompatActivity {
@@ -156,7 +154,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.historygm:
                 Intent intentHist =new Intent(getBaseContext(),gamehistory.class);
-                startActivity(intentHist);
+                //startActivity(intentHist);
+                Toast.makeText(this,"Coming soon",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.info:
                 Intent infoperson = new Intent(getBaseContext(), person.class);
