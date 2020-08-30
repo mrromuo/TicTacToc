@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         String name2 = getString(R.string.player2);
         S_PLAYER_NAME = ssPreferences.getString(S_PLAYER, name2);
         GAME_ANDROID = ssPreferences.getBoolean(GAME_ANDROID_KEY, false);
-
         issong = ssPreferences.getBoolean(SONG_Key, true);
         mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.playtime01);
         sadendsong = MediaPlayer.create(this, R.raw.sadend01);
