@@ -123,7 +123,7 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
-
+    <string name="pleasename">Please Add Your Name</string>
     <!-- history activity-->
     <string name="gamehistory">Game History</string>
 </resources>

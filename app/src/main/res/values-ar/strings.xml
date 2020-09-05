@@ -123,6 +123,7 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">إعدادات</string>
+    <string name="pleasename">أرجاء كتابت إسمك أولا</string>
 
     <string name="gamehistory">سجل العبة</string>
 

@@ -23,6 +23,7 @@ import static com.raeed.tictactoc.gameseting.SONG_Key;
 
 public class MainActivity extends AppCompatActivity {
     public static final String MAIN_PLAYER = "main_name";
+    public static String MAIN_USER_ID_KEY="UsrId";
     public static final String S_PLAYER = "S_name";
     public static final String NOT_YET = "NoName";
     public static final String GAME_SQ_KEY = "gmaesq";
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int X_samble_color = (R.color.image_backgroind_x);
     public static String MAIN_PLAYER_V;
     public static String MAIN_PLAYER_NAME;
+    public static String MAIN_PLAYER_ID;
     public static String S_PLAYER_NAME;
     public static ArrayList<HistoryArray> historyArray =new ArrayList<>();
     public static int HISTORY_INDEX;
@@ -122,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(infoperson, PERSON_INFO_REQUEST);
         } else {
             player1.setText(MAIN_PLAYER_V);
+            MAIN_PLAYER_ID = sharedPreferences.getString(MAIN_USER_ID_KEY,"ID_X");
             MAIN_PLAYER_NAME = MAIN_PLAYER_V;
         }
     }
