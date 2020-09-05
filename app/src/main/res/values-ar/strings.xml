@@ -21,6 +21,7 @@
     <string name="gmhistory">سجل اللعبة</string>
     <string name="information">معلوماتك الشخصية</string>
     <string name="gmandroid">العب مع اندرويد</string>
+    <string name="remotgame">العب عن بعد</string>
     <string name="gmhuman">العب مع شخص آخر</string>
     <string name="help">مساعده</string>
 
@@ -126,5 +127,5 @@
     <string name="pleasename">أرجاء كتابت إسمك أولا</string>
 
     <string name="gamehistory">سجل العبة</string>
-
+    <string name="selectionMain">إختر احد الخيارات التالية</string>
 </resources>

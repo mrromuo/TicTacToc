@@ -19,6 +19,7 @@
     <string name="gmhistory">Game History</string>
     <string name="information">Personal Information</string>
     <string name="gmandroid">Play with android</string>
+    <string name="remotgame">Play a Remot Game</string>
     <string name="gmhuman">Play with Human</string>
     <string name="help">Help</string>
 
@@ -126,4 +127,5 @@
     <string name="pleasename">Please Add Your Name</string>
     <!-- history activity-->
     <string name="gamehistory">Game History</string>
+    <string name="selectionMain">Selecet one Plese</string>
 </resources>

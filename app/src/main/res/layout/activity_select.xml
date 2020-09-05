@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".SelectActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/selectionMain"
+        android:textSize="@dimen/titel_text_size" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/personphoto_pading">
+
+        <RadioButton
+            android:id="@+id/androidSelected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/gmandroid"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/HumanSelected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/gmhuman"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/RemotSelected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="@string/remotgame" />
+
+    </RadioGroup>
+</LinearLayout>
