@@ -57,8 +57,8 @@
                     android:id="@+id/switch1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/song"
-                    android:onClick="aswitchd"/>
+                    android:onClick="aswitchd"
+                    android:text="@string/song" />
             </RadioGroup>
 
             <RadioGroup
