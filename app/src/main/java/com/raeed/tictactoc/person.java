@@ -21,6 +21,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import static com.raeed.tictactoc.MainActivity.MAIN_PLAYER;
+import static com.raeed.tictactoc.MainActivity.MAIN_PLAYER_ID;
+import static com.raeed.tictactoc.MainActivity.MAIN_PLAYER_NAME;
 import static com.raeed.tictactoc.MainActivity.MAIN_PLAYER_V;
 import static com.raeed.tictactoc.MainActivity.NOT_YET;
 
@@ -117,16 +119,22 @@ public class person extends AppCompatActivity {
     }
 
     void adduser(String UserId,String UserName){
-        myRef.child(UserId).setValue(UserName);
+
+       if (isNewUser) myRef.child(UserId).setValue(UserName);
+       else myRef.child(UserId).setPriority(UserName);
     }
+
     void UpDateLastUser(){
         LastID.setValue(NewId);
 
     }
 
     private void isNameVailable() {
-        if (MAIN_PLAYER_V == NOT_YET) isNewUser=true; else {
+        if (MAIN_PLAYER_V == NOT_YET || MAIN_PLAYER_ID == "ID_X" ) isNewUser=true;
+        else {
             isNewUser= false;
+            newname.setText(MAIN_PLAYER_NAME);
             // ToDo get the old Id;
-        }}
+        }
+    }
 }

@@ -23,7 +23,7 @@ import static com.raeed.tictactoc.gameseting.SONG_Key;
 
 public class MainActivity extends AppCompatActivity {
     public static final String MAIN_PLAYER = "main_name";
-    public static String MAIN_USER_ID_KEY="UsrId";
+    public static final String MAIN_USER_ID_KEY = "UsrId";
     public static final String S_PLAYER = "S_name";
     public static final String NOT_YET = "NoName";
     public static final String GAME_SQ_KEY = "gmaesq";
@@ -116,7 +116,8 @@ public class MainActivity extends AppCompatActivity {
     }
     private void isNameVailable() {
         MAIN_PLAYER_V = sharedPreferences.getString(MAIN_PLAYER, NOT_YET);
-        if (MAIN_PLAYER_V == NOT_YET) {
+        MAIN_PLAYER_ID = sharedPreferences.getString(MAIN_USER_ID_KEY,"ID_X");
+        if (MAIN_PLAYER_V == NOT_YET || MAIN_PLAYER_ID == "ID_X") {
             gamesequence = 0;
             editor.putInt(GAME_SQ_KEY, gamesequence);
             editor.apply();
@@ -124,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(infoperson, PERSON_INFO_REQUEST);
         } else {
             player1.setText(MAIN_PLAYER_V);
-            MAIN_PLAYER_ID = sharedPreferences.getString(MAIN_USER_ID_KEY,"ID_X");
             MAIN_PLAYER_NAME = MAIN_PLAYER_V;
         }
     }
@@ -133,8 +133,10 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK & requestCode == PERSON_INFO_REQUEST) {
             MAIN_PLAYER_NAME = data.getStringExtra(MAIN_PLAYER);
+            MAIN_PLAYER_ID = data.getStringExtra(MAIN_USER_ID_KEY);
             player1.setText(MAIN_PLAYER_NAME);
             editor.putString(MAIN_PLAYER, MAIN_PLAYER_NAME);
+            editor.putString(MAIN_USER_ID_KEY,MAIN_PLAYER_ID);
             editor.apply();
         } else {
             if (resultCode == RESULT_CANCELED & requestCode == PERSON_INFO_REQUEST) {
