@@ -1,30 +1,21 @@
 package com.raeed.tictactoc;
 
-import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
-import android.content.SharedPreferences;
+
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import static com.raeed.tictactoc.MainActivity.MAIN_PLAYER;
-import static com.raeed.tictactoc.MainActivity.MAIN_PLAYER_ID;
-import static com.raeed.tictactoc.MainActivity.MAIN_PLAYER_NAME;
-import static com.raeed.tictactoc.MainActivity.MAIN_PLAYER_V;
-import static com.raeed.tictactoc.MainActivity.NOT_YET;
+
 
 public class person extends AppCompatActivity {
     ImageView imageView;
@@ -32,14 +23,7 @@ public class person extends AppCompatActivity {
     Button save,cancel;
     Intent intent;
     final static int REQUEST_CODE=1; //requestCode
-    boolean isNewUser;
-    public int lastId,NewId;
-    String NewUserId,OldUserId;
     // FireBase Storage and relTime database configurations:
-    FirebaseStorage storage = FirebaseStorage.getInstance();
-    FirebaseDatabase MyData = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = MyData.getReference("users");
-    DatabaseReference LastID = MyData.getReference("lastId");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +33,6 @@ public class person extends AppCompatActivity {
         newname = findViewById(R.id.editPersonName);
         save = findViewById(R.id.submit);
         cancel = findViewById(R.id.ok);
-        isNameVailable();
-        setLastID();
-        NewId = lastId + 1;
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,15 +47,9 @@ public class person extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 intent=new Intent();
-                if (isNewUser) {
-                    NewUserId="ID_"+NewId;
-                } else NewUserId = OldUserId;
                 String name = newname.getText().toString();
                 if (name != "") {
-                    adduser(NewUserId,name);
-                    UpDateLastUser();
                     intent.putExtra(MAIN_PLAYER,name);
-                    intent.putExtra("UsrId", NewUserId);
                     setResult(RESULT_OK,intent);
                     finish();
                 } else
@@ -100,41 +75,7 @@ public class person extends AppCompatActivity {
         } else imageView.setImageResource(R.drawable.test);
     }
 
-    void setLastID(){
-        LastID.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int id = snapshot.getValue(Integer.class);
-                lastId = id; //Integer.valueOf(id);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                String text = error.getMessage();
-                Toast.makeText(getApplicationContext(),text,Toast.LENGTH_LONG).show();
 
-            }
-        });
 
-    }
-
-    void adduser(String UserId,String UserName){
-
-       if (isNewUser) myRef.child(UserId).setValue(UserName);
-       else myRef.child(UserId).setPriority(UserName);
-    }
-
-    void UpDateLastUser(){
-        LastID.setValue(NewId);
-
-    }
-
-    private void isNameVailable() {
-        if (MAIN_PLAYER_V == NOT_YET || MAIN_PLAYER_ID == "ID_X" ) isNewUser=true;
-        else {
-            isNewUser= false;
-            newname.setText(MAIN_PLAYER_NAME);
-            // ToDo get the old Id;
-        }
-    }
 }

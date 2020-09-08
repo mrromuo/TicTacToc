@@ -137,6 +137,7 @@ public class gameseting extends AppCompatActivity {
                 break;
             default:
                 Toast.makeText(getBaseContext(),"No selection found",Toast.LENGTH_LONG).show();
+                //todo arabic version
         }
         updatsettings();
     }

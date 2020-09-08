@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:background="@drawable/bk07"
     tools:context=".SelectActivity">
 
     <TextView
@@ -15,15 +16,17 @@
         android:textSize="@dimen/titel_text_size" />
 
     <RadioGroup
-        android:id="@+id/radioGroup"
+        android:id="@+id/Main_radioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="RadioGroubSelection"
         android:padding="@dimen/personphoto_pading">
 
         <RadioButton
             android:id="@+id/androidSelected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="RadioGroubSelection"
             android:text="@string/gmandroid"
             android:textSize="18sp" />
 
@@ -31,6 +34,7 @@
             android:id="@+id/HumanSelected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="RadioGroubSelection"
             android:text="@string/gmhuman"
             android:textSize="18sp" />
 
@@ -38,8 +42,23 @@
             android:id="@+id/RemotSelected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="RadioGroubSelection"
             android:textSize="18sp"
             android:text="@string/remotgame" />
 
+        <RadioButton
+            android:id="@+id/settingSelectted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="RadioGroubSelection"
+            android:text="@string/action_settings" />
+
     </RadioGroup>
+
+    <Button
+        android:id="@+id/Select_Ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@android:string/yes" />
+
 </LinearLayout>

@@ -1,5 +1,8 @@
 package com.raeed.tictactoc;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
@@ -14,31 +17,31 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.ArrayList;
 import java.util.Random;
-
 import static com.raeed.tictactoc.SelectActivity.NOT_YET;
 import static com.raeed.tictactoc.gameseting.SONG_Key;
 
-public class MainActivity extends AppCompatActivity {
+public class AndroidGame extends AppCompatActivity {
     public static final String MAIN_PLAYER = "main_name";
     public static final String MAIN_USER_ID_KEY = "UsrId";
+    public static final String S_PLAYER = "S_name";
     public static final String GAME_SQ_KEY = "gmaesq";
     public static final String GAME_QOUNT_KEY = "gmqounter";
+    public static final String GAME_ANDROID_KEY = "gmandroid";
     public static final int PERSON_INFO_REQUEST = 1;
     public static final int O_samble_color = (R.color.image_backgroind_o);
     public static final int X_samble_color = (R.color.image_backgroind_x);
+    public static String MAIN_PLAYER_V;
     public static String MAIN_PLAYER_NAME;
     public static String MAIN_PLAYER_ID;
-    public static ArrayList<HistoryArray> historyArray = new ArrayList<>();
+    public static String S_PLAYER_NAME;
+    public static ArrayList<HistoryArray> historyArray =new ArrayList<>();
     public static int HISTORY_INDEX;
     public static int gamesequence, GameCounter;
     Random random = new Random();
-    public static boolean PLAYER1_ST, PLAYER2_ST, GAME_ANDROID;
+    public static boolean PLAYER1_ST, PLAYER2_ST;
+    public static boolean GAME_ANDROID= true;
     public static boolean[][] GAME_BOARD = new boolean[2][9];
     int[] kyMap = {R.id.bu1, R.id.bu2, R.id.bu3, R.id.bu4, R.id.bu5, R.id.bu6, R.id.bu7, R.id.bu8, R.id.bu9};
     TextView player1, player2;
@@ -52,11 +55,10 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer happysong;
     // setting
     public static boolean issong;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_android_game);
         player1 = findViewById(R.id.player1);
         player2 = findViewById(R.id.player2);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -64,13 +66,17 @@ public class MainActivity extends AppCompatActivity {
         ssPreferences = getSharedPreferences("settings", MODE_PRIVATE);
         seditor = ssPreferences.edit();
         String name2 = getString(R.string.player2);
+        S_PLAYER_NAME = ssPreferences.getString(S_PLAYER, name2);
+        GAME_ANDROID = ssPreferences.getBoolean(GAME_ANDROID_KEY, false);
         issong = ssPreferences.getBoolean(SONG_Key, true);
-        mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.playtime01);
+        mediaPlayer = MediaPlayer.create(getBaseContext(), R.raw.playtime01);
         sadendsong = MediaPlayer.create(this, R.raw.sadend01);
         happysong = MediaPlayer.create(this, R.raw.yaybaby);
+
         if (issong) playIT();
         //if (issong) mediaPlayer.start();
-        getMainPlayer();
+
+        isNameVailable();
         rest = findViewById(R.id.reset);
         rest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,51 +86,68 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
     @Override
     protected void onPause() {
         super.onPause();
         if (mediaPlayer != null) mediaPlayer.release();
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         stopIT();
     }
-
     public void playIT() {
         if (mediaPlayer != null)
             mediaPlayer = MediaPlayer.create(getBaseContext(), R.raw.playtime01);
         mediaPlayer.start();
     }
-
     public void playsadend() {
         if (sadendsong != null) sadendsong = MediaPlayer.create(getBaseContext(), R.raw.sadend01);
         sadendsong.start();
         Toast.makeText(getBaseContext(), "play", Toast.LENGTH_LONG).show();
     }
-
     public void playhappy() {
         if (happysong != null) happysong = MediaPlayer.create(getBaseContext(), R.raw.yaybaby);
         happysong.start();
         Toast.makeText(getBaseContext(), "Happy winner!!", Toast.LENGTH_LONG).show();
     }
-
     public void stopIT() {
         if (mediaPlayer != null) mediaPlayer.release();
         mediaPlayer = null;
     }
-
-    private void getMainPlayer() {
-        MAIN_PLAYER_NAME = sharedPreferences.getString(MAIN_PLAYER, NOT_YET);
-        MAIN_PLAYER_ID = sharedPreferences.getString(MAIN_USER_ID_KEY, "ID_X");
+    private void isNameVailable() {
+        MAIN_PLAYER_V = sharedPreferences.getString(MAIN_PLAYER, NOT_YET);
+        MAIN_PLAYER_ID = sharedPreferences.getString(MAIN_USER_ID_KEY,"ID_X");
+        if (MAIN_PLAYER_V == NOT_YET || MAIN_PLAYER_ID == "ID_X") {
+            gamesequence = 0;
+            editor.putInt(GAME_SQ_KEY, gamesequence);
+            editor.apply();
+            Intent infoperson = new Intent(getBaseContext(), person.class);
+            startActivityForResult(infoperson, PERSON_INFO_REQUEST);
+        } else {
+            player1.setText(MAIN_PLAYER_V);
+            MAIN_PLAYER_NAME = MAIN_PLAYER_V;
+        }
     }
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK & requestCode == PERSON_INFO_REQUEST) {
+            MAIN_PLAYER_NAME = data.getStringExtra(MAIN_PLAYER);
+            MAIN_PLAYER_ID = data.getStringExtra(MAIN_USER_ID_KEY);
+            player1.setText(MAIN_PLAYER_NAME);
+            editor.putString(MAIN_PLAYER, MAIN_PLAYER_NAME);
+            editor.putString(MAIN_USER_ID_KEY,MAIN_PLAYER_ID);
+            editor.apply();
+        } else {
+            if (resultCode == RESULT_CANCELED & requestCode == PERSON_INFO_REQUEST) {
+                player1.setText(R.string.player1);
+            }
+        }
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-
         switch (item.getItemId()) {
             case R.id.newgm:
                 resetgame();
@@ -135,20 +158,20 @@ public class MainActivity extends AppCompatActivity {
                 //backgroundChanger();
                 return true;
             case R.id.historygm:
-                Intent intentHist = new Intent(getBaseContext(), gamehistory.class);
+                Intent intentHist =new Intent(getBaseContext(),gamehistory.class);
                 //startActivity(intentHist);
-                Toast.makeText(this, "Coming soon", Toast.LENGTH_LONG).show();
+                Toast.makeText(this,"Coming soon",Toast.LENGTH_LONG).show();
                 return true;
             case R.id.info:
                 Intent infoperson = new Intent(getBaseContext(), person.class);
                 startActivityForResult(infoperson, PERSON_INFO_REQUEST);
                 return true;
             case R.id.androidgm:
-                Intent AndroidGM = new Intent(getApplicationContext(), AndroidGame.class);
-                startActivity(AndroidGM);
+                Toast toast4 = Toast.makeText(getBaseContext(), getText(R.string.playwithAndroid), Toast.LENGTH_LONG);
+                toast4.show();
                 return true;
             case R.id.humangm:
-                Intent HumanGM = new Intent(getApplicationContext(), RemoPlay.class);
+                Intent HumanGM = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(HumanGM);
                 return true;
             case R.id.settingactivity:
@@ -162,30 +185,33 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         return true;
     }
-
     public void butclicked(View view) {
         gamesequence = sharedPreferences.getInt(GAME_SQ_KEY, 0);
         int SIMPLE_X_OR_O_color;
         int playersimple = 0;
         GameCounter++;
-
-        if (gamesequence == 0) {
+        if (GAME_ANDROID) {
             gamesequence = 1;
             SIMPLE_X_OR_O_color = O_samble_color;
             playersimple = (R.drawable.o);
         } else {
-            gamesequence = 0;
-            SIMPLE_X_OR_O_color = X_samble_color;
-            playersimple = (R.drawable.x);
-        }
 
+            if (gamesequence == 0) {
+                gamesequence = 1;
+                SIMPLE_X_OR_O_color = O_samble_color;
+                playersimple = (R.drawable.o);
+            } else {
+                gamesequence = 0;
+                SIMPLE_X_OR_O_color = X_samble_color;
+                playersimple = (R.drawable.x);
+            }
+        }
         if (GameCounter < 10) {
             int but = view.getId();
             ImageButton presdBut = findViewById(but);
@@ -264,8 +290,8 @@ public class MainActivity extends AppCompatActivity {
         editor.putInt(GAME_SQ_KEY, gamesequence);
         editor.putInt(GAME_QOUNT_KEY, GameCounter);
         editor.apply();
+        if (GAME_ANDROID &&  GameCounter < 10) androidply();
     }
-
     // game reset
     private void resetgame() {
         String sX[] = {"s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"};
@@ -289,30 +315,27 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayer.release();
         if (issong) playIT();
     }
-
     // winner announcement
     private void winner(int playerId) {
-        String name2 = getString(R.string.player2);
         String p1 = getText(R.string.player1win).toString() + " " + MAIN_PLAYER_NAME;
-        String p2 = getText(R.string.player2win).toString() + " " + name2;
+        String p2 = getText(R.string.player2win).toString() + " " + S_PLAYER_NAME;
         if (playerId == 1) {
+            playhappy();
             Toast.makeText(getBaseContext(), p1, Toast.LENGTH_LONG).show();
         } else {
+            if (GAME_ANDROID)playsadend();else playhappy();
             Toast.makeText(getBaseContext(), p2, Toast.LENGTH_LONG).show();
         }
-        playhappy();
-        HistoryArray neitem = new HistoryArray(MAIN_PLAYER_NAME, name2, playerId);
-        historyArray.add(HISTORY_INDEX, neitem);
+        HistoryArray neitem=new HistoryArray(MAIN_PLAYER_NAME,S_PLAYER_NAME,playerId);
+        historyArray.add(HISTORY_INDEX,neitem);
         HISTORY_INDEX++;
     }
-
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
         outState.putInt(GAME_SQ_KEY, gamesequence);
         outState.putInt(GAME_QOUNT_KEY, GameCounter);
     }
-
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -343,40 +366,119 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    private void androidply() {
+        ImageButton androidbut;
+        int but=butnum();
+        GameCounter++;
+        gamesequence=0;
+        androidbut = findViewById(but);
+        androidbut.setBackgroundColor(getResources().getColor(R.color.image_backgroind_x, getBaseContext().getTheme()));
+        androidbut.setImageResource(R.drawable.x);
+        androidbut.setClickable(false);
 
-//    private int butnum() {
-//        ArrayList<Integer> fbut = new ArrayList<>();
-//        boolean[] newbord = new boolean[9];
-//        for (int i = 0; i < 9; i++) newbord[i] = GAME_BOARD[0][i] || GAME_BOARD[1][i];
-//        int x = 0;
-//        int but = 0;
-//        for (int i = 0; i < 9; i++) {
-//            if (GAME_BOARD[0][i] || GAME_BOARD[1][i]) x++;
-//            else {
-//                x++;
-//                fbut.add(kyMap[i]);
-//            }
-//        }
-//        if (!newbord[4]) {
-//            but = kyMap[4];
-//            return but;
-//        } else if (!newbord[0]) {
-//            but = kyMap[0];
-//            return but;
-//        } else if (!newbord[2]) {
-//            but = kyMap[2];
-//            return but;
-//        } else if (!newbord[1]) {
-//            but = kyMap[1];
-//            return but;
-//        } else if (!newbord[6]) {
-//            but = kyMap[6];
-//            return but;
-//        } else {
-//            int d = fbut.size();
-//            int h = random.nextInt(d);
-//            but = fbut.get(h);
-//        }
-//        return but;
-//    }
+        switch (but) {
+            case R.id.bu1:
+                GAME_BOARD[gamesequence][0] = true;
+                editor.putBoolean("s0", true);
+                editor.putInt("xo0", gamesequence);
+                break;
+            case R.id.bu2:
+                GAME_BOARD[gamesequence][1] = true;
+                editor.putBoolean("s1", true);
+                editor.putInt("xo1", gamesequence);
+                break;
+            case R.id.bu3:
+                GAME_BOARD[gamesequence][2] = true;
+                editor.putBoolean("s2", true);
+                editor.putInt("xo2", gamesequence);
+                break;
+            case R.id.bu4:
+                GAME_BOARD[gamesequence][3] = true;
+                editor.putBoolean("s3", true);
+                editor.putInt("xo3", gamesequence);
+                break;
+            case R.id.bu5:
+                GAME_BOARD[gamesequence][4] = true;
+                editor.putBoolean("s4", true);
+                editor.putInt("xo4", gamesequence);
+                break;
+            case R.id.bu6:
+                GAME_BOARD[gamesequence][5] = true;
+                editor.putBoolean("s5", true);
+                editor.putInt("xo5", gamesequence);
+                break;
+            case R.id.bu7:
+                GAME_BOARD[gamesequence][6] = true;
+                editor.putBoolean("s6", true);
+                editor.putInt("xo6", gamesequence);
+                break;
+            case R.id.bu8:
+                GAME_BOARD[gamesequence][7] = true;
+                editor.putBoolean("s7", true);
+                editor.putInt("xo7", gamesequence);
+                break;
+            case R.id.bu9:
+                GAME_BOARD[gamesequence][8] = true;
+                editor.putBoolean("s8", true);
+                editor.putInt("xo8", gamesequence);
+                break;
+        }
+        String winner;
+        int x = 0;
+        int s = 0;
+        int secdS[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 4, 8, 0, 3, 6, 1, 4, 7, 2, 5, 8, 6, 4, 2};
+        do {
+            PLAYER2_ST = GAME_BOARD[0][secdS[s]] & GAME_BOARD[0][secdS[s + 1]] & GAME_BOARD[0][secdS[s + 2]];
+            PLAYER1_ST = GAME_BOARD[1][secdS[s]] & GAME_BOARD[1][secdS[s + 1]] & GAME_BOARD[1][secdS[s + 2]];
+            if (PLAYER1_ST) {
+                GameCounter = 10;
+                winner(1);
+                break;
+            } else if (PLAYER2_ST) {
+                GameCounter = 10;
+                winner(2);
+                break;
+            } else winner = "Draw";
+            s += 3;
+            x++;
+        } while (x < 8);
+        editor.putInt(GAME_SQ_KEY,gamesequence);
+        editor.putInt(GAME_QOUNT_KEY,GameCounter);
+        editor.apply();
+    }
+    private int butnum() {
+        ArrayList<Integer> fbut = new ArrayList<>();
+        boolean[] newbord = new boolean[9];
+        for (int i = 0; i < 9; i++) newbord[i]=GAME_BOARD[0][i] || GAME_BOARD[1][i];
+        int x = 0;
+        int but = 0;
+        for (int i = 0; i < 9; i++) {
+            if (GAME_BOARD[0][i] || GAME_BOARD[1][i]) x++;
+            else {
+                x++;
+                fbut.add(kyMap[i]);
+            }
+        }
+        if (! newbord[4]){
+            but = kyMap[4];
+            return but;
+        } else if (! newbord[0]){
+            but = kyMap[0];
+            return but;
+        } else if (! newbord[2]){
+            but = kyMap[2];
+            return but;
+        } else if (! newbord[1]){
+            but = kyMap[1];
+            return but;
+        } else if (! newbord[6]){
+            but = kyMap[6];
+            return but;
+        } else {
+            int d = fbut.size();
+            int h = random.nextInt(d);
+            but=fbut.get(h);
+        }
+        return but;
+    }
 }
