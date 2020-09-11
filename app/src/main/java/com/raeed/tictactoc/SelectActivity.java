@@ -8,17 +8,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.HashMap;
 
 public class SelectActivity extends AppCompatActivity {
     public static final String MAIN_PLAYER = "main_name";
@@ -31,6 +34,7 @@ public class SelectActivity extends AppCompatActivity {
     public static String MAIN_PLAYER_ID;
     public static String MAIN_PLAYER_I;
     public int lastId,NewId;
+    private HashMap hashMap;
     Intent SelectedIntent = null;
     Button ok;
     RadioGroup Rg;
@@ -91,12 +95,39 @@ public class SelectActivity extends AppCompatActivity {
     }
 
     private void setId() {
+        final DatabaseReference RootRef;
+        RootRef = FirebaseDatabase.getInstance().getReference();
         NewId = lastId +1;
         MAIN_PLAYER_ID = "ID_"+ NewId;
         editor.putString(MAIN_USER_ID_KEY, MAIN_PLAYER_ID);
         editor.apply();
         LastID.setValue(NewId);
-        myRef.child(MAIN_PLAYER_ID).setValue(MAIN_PLAYER_NAME);
+        //myRef.child(MAIN_PLAYER_ID).setValue(MAIN_PLAYER_NAME); // this way was working but we go for more advance way using HashMap.
+        RootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                HashMap<String,Object> userdataMap = new HashMap<>();
+                userdataMap.put("name",MAIN_PLAYER_NAME);
+                RootRef.child("users").child(MAIN_PLAYER_ID).updateChildren(userdataMap)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()) {
+                                    String NewTet = getString(R.string.accountdone);
+                                    Toast.makeText(getBaseContext(),NewTet,Toast.LENGTH_LONG).show();
+                                } else {
+                                    String NewText = getString(R.string.sorryaccountnot);
+                                    Toast.makeText(getBaseContext(),NewText,Toast.LENGTH_LONG).show();}
+                            }
+                        });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                String NewText = getString(R.string.sorryaccountnot);
+                Toast.makeText(getBaseContext(),NewText,Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

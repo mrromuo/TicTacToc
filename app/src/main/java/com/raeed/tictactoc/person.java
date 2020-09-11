@@ -46,9 +46,11 @@ public class person extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 intent=new Intent();
                 String name = newname.getText().toString();
-                if (name != "") {
+                int NameLinth = name.length();
+                if (NameLinth < 3) {
                     intent.putExtra(MAIN_PLAYER,name);
                     setResult(RESULT_OK,intent);
                     finish();

@@ -14,15 +14,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.ArrayList;
-import java.util.Random;
-
 import static com.raeed.tictactoc.SelectActivity.NOT_YET;
 import static com.raeed.tictactoc.gameseting.SONG_Key;
+import static com.raeed.tictactoc.Game.GAME_BOARD;
 
 public class MainActivity extends AppCompatActivity {
     public static final String MAIN_PLAYER = "main_name";
@@ -37,10 +34,9 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<HistoryArray> historyArray = new ArrayList<>();
     public static int HISTORY_INDEX;
     public static int gamesequence, GameCounter;
-    Random random = new Random();
-    public static boolean PLAYER1_ST, PLAYER2_ST, GAME_ANDROID;
-    public static boolean[][] GAME_BOARD = new boolean[2][9];
+    public static boolean issong;;
     int[] kyMap = {R.id.bu1, R.id.bu2, R.id.bu3, R.id.bu4, R.id.bu5, R.id.bu6, R.id.bu7, R.id.bu8, R.id.bu9};
+    Game game = new Game();
     TextView player1, player2;
     Button rest;
     SharedPreferences sharedPreferences;
@@ -50,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer mediaPlayer;
     MediaPlayer sadendsong;
     MediaPlayer happysong;
-    // setting
-    public static boolean issong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,16 +93,13 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayer.start();
     }
 
-    public void playsadend() {
-        if (sadendsong != null) sadendsong = MediaPlayer.create(getBaseContext(), R.raw.sadend01);
-        sadendsong.start();
-        Toast.makeText(getBaseContext(), "play", Toast.LENGTH_LONG).show();
-    }
-
     public void playhappy() {
+        if (sadendsong != null) mediaPlayer.release();
+        sadendsong = null;
         if (happysong != null) happysong = MediaPlayer.create(getBaseContext(), R.raw.yaybaby);
         happysong.start();
         Toast.makeText(getBaseContext(), "Happy winner!!", Toast.LENGTH_LONG).show();
+        // TODO Arabic version and player name to be use in this toast
     }
 
     public void stopIT() {
@@ -119,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
     private void getMainPlayer() {
         MAIN_PLAYER_NAME = sharedPreferences.getString(MAIN_PLAYER, NOT_YET);
         MAIN_PLAYER_ID = sharedPreferences.getString(MAIN_USER_ID_KEY, "ID_X");
+        player1.setText(MAIN_PLAYER_NAME);
+        player2.setText(getString(R.string.player2));
     }
 
     @Override
@@ -192,74 +185,25 @@ public class MainActivity extends AppCompatActivity {
             presdBut.setBackgroundColor(getResources().getColor(SIMPLE_X_OR_O_color, getBaseContext().getTheme()));
             presdBut.setImageResource(playersimple);
             presdBut.setClickable(false);
-            // users buttons click respond
-            switch (but) {
-                case R.id.bu1:
-                    GAME_BOARD[gamesequence][0] = true;
-                    editor.putBoolean("s0", true);
-                    editor.putInt("xo0", gamesequence);
-                    break;
-                case R.id.bu2:
-                    GAME_BOARD[gamesequence][1] = true;
-                    editor.putBoolean("s1", true);
-                    editor.putInt("xo1", gamesequence);
-                    break;
-                case R.id.bu3:
-                    GAME_BOARD[gamesequence][2] = true;
-                    editor.putBoolean("s2", true);
-                    editor.putInt("xo2", gamesequence);
-                    break;
-                case R.id.bu4:
-                    GAME_BOARD[gamesequence][3] = true;
-                    editor.putBoolean("s3", true);
-                    editor.putInt("xo3", gamesequence);
-                    break;
-                case R.id.bu5:
-                    GAME_BOARD[gamesequence][4] = true;
-                    editor.putBoolean("s4", true);
-                    editor.putInt("xo4", gamesequence);
-                    break;
-                case R.id.bu6:
-                    GAME_BOARD[gamesequence][5] = true;
-                    editor.putBoolean("s5", true);
-                    editor.putInt("xo5", gamesequence);
-                    break;
-                case R.id.bu7:
-                    GAME_BOARD[gamesequence][6] = true;
-                    editor.putBoolean("s6", true);
-                    editor.putInt("xo6", gamesequence);
-                    break;
-                case R.id.bu8:
-                    GAME_BOARD[gamesequence][7] = true;
-                    editor.putBoolean("s7", true);
-                    editor.putInt("xo7", gamesequence);
-                    break;
-                case R.id.bu9:
-                    GAME_BOARD[gamesequence][8] = true;
-                    editor.putBoolean("s8", true);
-                    editor.putInt("xo8", gamesequence);
-                    break;
-            }
+
+            game.setbutoon(but,gamesequence,getBaseContext());
+
             // find winner
-            String winner;
-            int x = 0;
-            int s = 0;
-            int secdS[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 4, 8, 0, 3, 6, 1, 4, 7, 2, 5, 8, 6, 4, 2};
-            do {
-                PLAYER2_ST = GAME_BOARD[0][secdS[s]] & GAME_BOARD[0][secdS[s + 1]] & GAME_BOARD[0][secdS[s + 2]];
-                PLAYER1_ST = GAME_BOARD[1][secdS[s]] & GAME_BOARD[1][secdS[s + 1]] & GAME_BOARD[1][secdS[s + 2]];
-                if (PLAYER1_ST) {
+            // find the Winner if referee feed back 1 : player 1 win and winner(1); method run;
+            //             but if referee feed back 2 : player 2 win and winner(2); method run;
+            //             else nothing going to be happen.
+
+            int ref= game.referee(GameCounter);
+            switch (ref) {
+                case 1:
                     GameCounter = 10;
                     winner(1);
                     break;
-                } else if (PLAYER2_ST) {
+                case 2:
                     GameCounter = 10;
                     winner(2);
                     break;
-                } else winner = "Draw";
-                s += 3;
-                x++;
-            } while (x < 8);
+            }
         }
         editor.putInt(GAME_SQ_KEY, gamesequence);
         editor.putInt(GAME_QOUNT_KEY, GameCounter);
@@ -343,40 +287,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-//    private int butnum() {
-//        ArrayList<Integer> fbut = new ArrayList<>();
-//        boolean[] newbord = new boolean[9];
-//        for (int i = 0; i < 9; i++) newbord[i] = GAME_BOARD[0][i] || GAME_BOARD[1][i];
-//        int x = 0;
-//        int but = 0;
-//        for (int i = 0; i < 9; i++) {
-//            if (GAME_BOARD[0][i] || GAME_BOARD[1][i]) x++;
-//            else {
-//                x++;
-//                fbut.add(kyMap[i]);
-//            }
-//        }
-//        if (!newbord[4]) {
-//            but = kyMap[4];
-//            return but;
-//        } else if (!newbord[0]) {
-//            but = kyMap[0];
-//            return but;
-//        } else if (!newbord[2]) {
-//            but = kyMap[2];
-//            return but;
-//        } else if (!newbord[1]) {
-//            but = kyMap[1];
-//            return but;
-//        } else if (!newbord[6]) {
-//            but = kyMap[6];
-//            return but;
-//        } else {
-//            int d = fbut.size();
-//            int h = random.nextInt(d);
-//            but = fbut.get(h);
-//        }
-//        return but;
-//    }
 }

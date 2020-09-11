@@ -124,7 +124,9 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">إعدادات</string>
-    <string name="pleasename">أرجاء كتابت إسمك أولا</string>
+    <string name="pleasename">الرجاء إضافة اسمك و بطول أكثر من 3 أحرف</string>
+    <string name="accountdone">تم إنشاء حسابك في اللعبة</string>
+    <string name="sorryaccountnot">عذرا، لم تمكن من انشاء حساب لك ، تأكد من الانترنت</string>
 
     <string name="gamehistory">سجل العبة</string>
     <string name="selectionMain">إختر احد الخيارات التالية</string>

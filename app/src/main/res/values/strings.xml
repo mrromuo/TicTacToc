@@ -124,7 +124,9 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
-    <string name="pleasename">Please Add Your Name</string>
+    <string name="pleasename">Please Add Your Name with Length more than 3 letters</string>
+    <string name="accountdone">Your account is has been created</string>
+    <string name="sorryaccountnot">Sorry , cannot create new account please check your internet and try again!!</string>
     <!-- history activity-->
     <string name="gamehistory">Game History</string>
     <string name="selectionMain">Selecet one Plese</string>
