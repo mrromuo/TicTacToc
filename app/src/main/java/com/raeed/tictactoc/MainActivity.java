@@ -119,8 +119,9 @@ public class MainActivity extends AppCompatActivity {
         // Handle item selection
 
         switch (item.getItemId()) {
-            case R.id.newgm:
-                resetgame();
+            case R.id.Info_page:
+                Intent InfoIntent=new Intent(getBaseContext(),UserInfoPage.class);
+                startActivity(InfoIntent);
                 return true;
             case R.id.bakgnd:
                 Toast toast2 = Toast.makeText(getBaseContext(), "Background change option coming soon", Toast.LENGTH_LONG);

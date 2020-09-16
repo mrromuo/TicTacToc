@@ -127,7 +127,10 @@
     <string name="pleasename">الرجاء إضافة اسمك و بطول أكثر من 3 أحرف</string>
     <string name="accountdone">تم إنشاء حسابك في اللعبة</string>
     <string name="sorryaccountnot">عذرا، لم تمكن من انشاء حساب لك ، تأكد من الانترنت</string>
+    <string name="welcomback">مرحبابعودتك يا </string>
 
     <string name="gamehistory">سجل العبة</string>
     <string name="selectionMain">إختر احد الخيارات التالية</string>
+    <string name="tele">رقم الهاتف</string>
+    <string name="infopage">معلوماتك الشخصية</string>
 </resources>

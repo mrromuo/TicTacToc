@@ -127,7 +127,10 @@
     <string name="pleasename">Please Add Your Name with Length more than 3 letters</string>
     <string name="accountdone">Your account is has been created</string>
     <string name="sorryaccountnot">Sorry , cannot create new account please check your internet and try again!!</string>
+    <string name="welcomback">Welcome back: </string>
     <!-- history activity-->
     <string name="gamehistory">Game History</string>
     <string name="selectionMain">Selecet one Plese</string>
+    <string name="tele">Telephone Number</string>
+    <string name="infopage">Personal information View</string>
 </resources>

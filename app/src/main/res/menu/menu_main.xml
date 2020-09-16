@@ -6,9 +6,9 @@
         android:title="@string/bkgroind"
         android:icon="@android:drawable/ic_menu_gallery"/>
     <item
-        android:id="@+id/newgm"
+        android:id="@+id/Info_page"
         android:icon="@android:drawable/ic_menu_zoom"
-        android:title="@string/newGame" />
+        android:title="@string/infopage" />
     <group>
         <item android:title="@string/gmhistory"
             android:id="@+id/historygm"/>

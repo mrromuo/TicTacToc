@@ -9,6 +9,7 @@
     <!-- text sizes -->
     <dimen name="titel_text_size">48sp</dimen>
     <dimen name="sub_text_size">24sp</dimen>
+    <dimen name="sub_text_mrg">8dp</dimen>
 
     <!-- photos -->
     <dimen name="personphoto_hight">350dp</dimen>

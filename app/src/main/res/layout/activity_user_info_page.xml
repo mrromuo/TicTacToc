@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bk07"
-    tools:context=".person">
+    tools:context=".UserInfoPage">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/info_image"
         android:layout_width="@dimen/personphoto_wigth"
         android:layout_height="@dimen/personphoto_hight"
         android:layout_alignParentTop="true"
@@ -18,23 +18,23 @@
         android:background="@drawable/photobackground"
         tools:srcCompat="@drawable/test" />
 
-     <TextView
-        android:id="@+id/personname"
+    <TextView
+        android:id="@+id/info_personname"
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_hight"
-        android:layout_below="@+id/imageView"
+        android:layout_below="@+id/info_image"
         android:background="@drawable/textview_background"
         android:gravity="center"
         android:layout_margin="8dp"
         android:textSize="@dimen/sub_text_size"
-        android:text="@string/player_name"
+        android:text="PLAYER NAME"
         />
 
-    <EditText
-        android:id="@+id/editPersonName"
+    <TextView
+        android:id="@+id/info_telphone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_hight"
-        android:layout_below="@+id/personname"
+        android:layout_below="@+id/info_personname"
         android:layout_margin="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -43,47 +43,21 @@
         android:background="@drawable/textview_background"
         android:ems="10"
         android:gravity="center"
-        android:hint="@string/player_name_hint"
-        android:inputType="textPersonName"
-        android:textSize="@dimen/sub_text_size" />
-
-    <EditText
-        android:id="@+id/telphone"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/text_hight"
-        android:layout_below="@+id/editPersonName"
-        android:layout_margin="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/textview_background"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="@string/tele"
-        android:inputType="phone"
         android:textSize="@dimen/sub_text_size" />
 
     <Button
-        android:id="@+id/submit"
+        android:id="@+id/info_Ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/telphone"
-        android:layout_margin="@dimen/Button_a_m"
-        android:background="@drawable/bourronsbk"
-        android:text="@string/sumbut_it" />
-
-    <Button
-        android:id="@+id/ok"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/telphone"
+        android:layout_below="@+id/info_telphone"
         android:layout_marginStart="@dimen/Button_a_m"
         android:layout_marginTop="@dimen/Button_a_m"
         android:layout_marginEnd="@dimen/Button_a_m"
         android:layout_marginBottom="@dimen/Button_a_m"
-        android:layout_toEndOf="@+id/submit"
         android:background="@drawable/bourronsbk"
-        android:text="@android:string/cancel" />
+        android:onClick="infodone"
+        android:text="@android:string/ok" />
+
+
 
 </RelativeLayout>
