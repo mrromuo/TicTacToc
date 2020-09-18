@@ -56,6 +56,7 @@ public class person extends AppCompatActivity {
     Button save,cancel;
     Intent intent;
 
+
     private static final String TAG = "person";
     int AUTHUI_REQUEST_CODE = 11476;
 
@@ -156,12 +157,13 @@ public class person extends AppCompatActivity {
         String name = newname.getText().toString();
         String Tphone = phone.getText().toString();
         String email = Email.getText().toString();
+        String photo = ImageName;
         //int NameLinth = name.length();
         if (name !="") {
             intent.putExtra(MAIN_PLAYER,name);
-            intent.putExtra(IMAGE_KEY,ImageName);
             intent.putExtra(PHONE_KEY,Tphone);
             intent.putExtra(EMAIL_KEY,email);
+            intent.putExtra(IMAGE_KEY,photo);
             setResult(RESULT_OK,intent);
             finish();
         } else
@@ -174,7 +176,7 @@ public class person extends AppCompatActivity {
         //MAIN_PLAYER_ID = sharedPreferences.getString(MAIN_USER_ID_KEY, "ID_X");
         oldPhone= sharedPreferences.getString(PHONE_KEY, "0500000000");
         oldEmail= sharedPreferences.getString(EMAIL_KEY, "ex@ex.com");
-        ImageName= sharedPreferences.getString(IMAGE_KEY , "0500000000");
+        ImageName= sharedPreferences.getString(IMAGE_KEY , IMAGE_NotYet);
         phone.setText(oldPhone);
         newname.setText(MainName);
         Email.setText(oldEmail);
@@ -218,6 +220,7 @@ public class person extends AppCompatActivity {
                     Email.setText(user.getEmail());
                     newname.setText(user.getDisplayName());
 
+
                 }else
                     {
                         String text = getString(R.string.welcome);
@@ -243,22 +246,25 @@ public class person extends AppCompatActivity {
         CropImage.activity(imageUri)
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setMultiTouchEnabled(true)
-                .setMinCropResultSize(200,300)
-                .setMaxCropResultSize(500,600)
+                .setMinCropResultSize(250,320)
+                .setMaxCropResultSize(500,640)
                 .start(this);
     }
 
     private void uploadimage()
     {
+        intent=new Intent();
         final ProgressDialog pd = new ProgressDialog(this);
         pd.setTitle("Uploading....");
         pd.show();
-        if (ImageName != "" )
+        //ImageName = UUID.randomUUID().toString()+".jpeg";
+        if (ImageName == IMAGE_NotYet )
         {
-            if(ImageName == IMAGE_NotYet) ImageName = UUID.randomUUID().toString()+".jpeg";
+            ImageName = UUID.randomUUID().toString()+".jpeg";
         }
-        else ImageName = UUID.randomUUID().toString()+".jpeg";
-        //Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
+        else if (ImageName == null) ImageName = UUID.randomUUID().toString()+".jpeg";
+        
+
         StorageReference riversRef = storageReference.child(PrfileImageChiled).child(ImageName);
 
         riversRef.putFile(uri)
@@ -267,7 +273,6 @@ public class person extends AppCompatActivity {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         pd.dismiss();
                         Snackbar.make(findViewById(R.id.personemail),"Image Uploading Done",Snackbar.LENGTH_LONG).show();
-                        intent=new Intent();
                         intent.putExtra(IMAGE_KEY,ImageName);
 
                     }

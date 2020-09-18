@@ -39,15 +39,9 @@ public class SelectActivity extends AppCompatActivity {
     public static String MAIN_PLAYER_NAME;
     public static String MAIN_PLAYER_ID;
     public static String telephone;
-    public static String imagekey;
     public static String IMAGE_NAME;
     public static String email;
     public int lastId,NewId;
-    private HashMap hashMap;
-    private String aname;
-    private String anId;
-
-
     Intent SelectedIntent = null;
     Button ok;
     RadioGroup Rg;
@@ -123,33 +117,9 @@ public class SelectActivity extends AppCompatActivity {
         }
     }
 
-
-    void checkFireBase(String Name , String Id)
-    {
-        aname =Name;
-        anId =Id;
-        RootRef = FirebaseDatabase.getInstance().getReference();
-        RootRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.child(anId).child(aname).exists()) {
-                    Intent infoperson = new Intent(getBaseContext(), person.class);
-                    startActivityForResult(infoperson, PERSON_INFO_REQUEST);
-                } else {
-                    String text =getString(R.string.welcomback)+" "+ aname;
-                    Toast.makeText(getBaseContext(),text,Toast.LENGTH_LONG).show();}
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
     private void setId()
     {
-        final DatabaseReference RootRef;
+
         RootRef = FirebaseDatabase.getInstance().getReference();
         NewId = lastId +1;
         MAIN_PLAYER_ID = "ID_"+ NewId;
@@ -160,6 +130,7 @@ public class SelectActivity extends AppCompatActivity {
         intent.putExtra(MAIN_USER_ID_KEY,MAIN_PLAYER_ID);
         editor.putString(MAIN_USER_ID_KEY,MAIN_PLAYER_ID);
         editor.apply();
+        RootRef.child("users").child(MAIN_PLAYER_ID).child(IMAGE_KEY).setValue(IMAGE_NAME);
 
         //myRef.child(MAIN_PLAYER_ID).setValue(MAIN_PLAYER_NAME); // this way was working but we go for more advance way using HashMap.
         RootRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -170,7 +141,7 @@ public class SelectActivity extends AppCompatActivity {
                 userdataMap.put(IMAGE_KEY,IMAGE_NAME);
                 userdataMap.put(PHONE_KEY,telephone);
                 userdataMap.put(EMAIL_KEY,email);
-                RootRef.child("users").child(MAIN_PLAYER_ID).updateChildren(userdataMap)
+                RootRef.child("users").child(MAIN_PLAYER_ID).setValue(userdataMap)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -193,10 +164,11 @@ public class SelectActivity extends AppCompatActivity {
     }
     private void update()
     {
-        final DatabaseReference RootRef;
+
         RootRef = FirebaseDatabase.getInstance().getReference();
         readId();
         //myRef.child(MAIN_PLAYER_ID).setValue(MAIN_PLAYER_NAME); // this way was working but we go for more advance way using HashMap.
+        RootRef.child("users").child(MAIN_PLAYER_ID).child(IMAGE_KEY).setValue(IMAGE_NAME);
         RootRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -228,49 +200,35 @@ public class SelectActivity extends AppCompatActivity {
         });
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK & requestCode == PERSON_INFO_REQUEST) {
-            MAIN_PLAYER_NAME = data.getStringExtra(MAIN_PLAYER);
-            IMAGE_NAME = data.getStringExtra(IMAGE_KEY);
-            telephone =data.getStringExtra(PHONE_KEY);
-            email=data.getStringExtra(EMAIL_KEY);
-            editor.putString(MAIN_PLAYER, MAIN_PLAYER_NAME);
-            editor.putString(IMAGE_KEY, IMAGE_NAME);
-            editor.putString(PHONE_KEY, telephone);
-            editor.putString(EMAIL_KEY, email);
-            editor.apply();
-            setId();
-        }
-        else if(resultCode == RESULT_OK & requestCode == PERSON_update_REQUEST)
-        {
-            MAIN_PLAYER_NAME = data.getStringExtra(MAIN_PLAYER);
-            IMAGE_NAME =data.getStringExtra(IMAGE_KEY);
-            telephone =data.getStringExtra(PHONE_KEY);
-            email=data.getStringExtra(EMAIL_KEY);
-            editor.putString(MAIN_PLAYER, MAIN_PLAYER_NAME);
-            editor.putString(IMAGE_KEY, IMAGE_NAME);
-            editor.putString(PHONE_KEY, telephone);
-            editor.putString(EMAIL_KEY, email);
-            editor.apply();
-            update();
-
-        }
-        else if (resultCode == RESULT_CANCELED & requestCode == PERSON_INFO_REQUEST)
-        {
-                MAIN_PLAYER_NAME= NOT_YET;
+        if (resultCode == RESULT_OK) {
+            if (requestCode == PERSON_INFO_REQUEST) {
+                MAIN_PLAYER_NAME = data.getStringExtra(MAIN_PLAYER);
+                IMAGE_NAME = data.getStringExtra(IMAGE_KEY);
+                telephone = data.getStringExtra(PHONE_KEY);
+                email = data.getStringExtra(EMAIL_KEY);
                 editor.putString(MAIN_PLAYER, MAIN_PLAYER_NAME);
-                editor.putString(IMAGE_KEY, IMAGE_NotYet);
-                editor.putString(PHONE_KEY, "telephone ??");
-                editor.putString(EMAIL_KEY, "email: ??");
+                editor.putString(IMAGE_KEY, IMAGE_NAME);
+                editor.putString(PHONE_KEY, telephone);
+                editor.putString(EMAIL_KEY, email);
                 editor.apply();
                 setId();
-        }
-        else if (resultCode == RESULT_CANCELED & requestCode == PERSON_update_REQUEST)
-        {
-            Toast.makeText(getBaseContext(),"RESULT CANCELED",Toast.LENGTH_SHORT).show();
-        }
+            } else {
+                MAIN_PLAYER_NAME = data.getStringExtra(MAIN_PLAYER);
+                IMAGE_NAME = data.getStringExtra(IMAGE_KEY);
+                telephone = data.getStringExtra(PHONE_KEY);
+                email = data.getStringExtra(EMAIL_KEY);
+                editor.putString(MAIN_PLAYER, MAIN_PLAYER_NAME);
+                editor.putString(IMAGE_KEY, IMAGE_NAME);
+                editor.putString(PHONE_KEY, telephone);
+                editor.putString(EMAIL_KEY, email);
+                editor.apply();
+                update();
+            }
+
+        } else Toast.makeText(getBaseContext(), "RESULT CANCELED", Toast.LENGTH_SHORT).show();
+
     }
 
     public void readId()
@@ -300,7 +258,7 @@ public class SelectActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.Info_page:
                 Intent InfoIntent=new Intent(getBaseContext(),UserInfoPage.class);
-                startActivityForResult(InfoIntent,PERSON_update_REQUEST);
+                startActivity(InfoIntent);
                 return true;
             case R.id.bakgnd:
                 Toast toast2 = Toast.makeText(getBaseContext(), "Background change option coming soon", Toast.LENGTH_LONG);
