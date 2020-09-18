@@ -11,7 +11,8 @@
     <string name="player1win">فاز اللاعب الأول</string>
     <string name="player2win">فاز اللاعب الثاني</string>
     <string name="android">اندرويد</string>
-    <string name="player_name">اكتب اسمك بالاسفل</string>
+    <string name="player_email">اكتب الإيميل</string>
+    <string name="player_name">اكتب اسمك</string>
     <string name="player_name_hint">رائد منصور آل قصاب</string>
     <string name="sumbut_it">أرسـل</string>
     <string name="winerannoun">الفائز هو</string>
@@ -133,4 +134,5 @@
     <string name="selectionMain">إختر احد الخيارات التالية</string>
     <string name="tele">رقم الهاتف</string>
     <string name="infopage">معلوماتك الشخصية</string>
+    <string name="welcome">مرحبا بك في اللعبة</string>
 </resources>

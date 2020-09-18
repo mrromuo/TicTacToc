@@ -29,12 +29,26 @@
         android:textSize="@dimen/sub_text_size"
         android:text="PLAYER NAME"
         />
+    <TextView
+        android:id="@+id/info_email"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_hight"
+        android:layout_below="@+id/info_personname"
+        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/textview_background"
+        android:ems="10"
+        android:gravity="center"
+        android:textSize="@dimen/sub_text_size" />
 
     <TextView
         android:id="@+id/info_telphone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_hight"
-        android:layout_below="@+id/info_personname"
+        android:layout_below="@+id/info_email"
         android:layout_margin="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"

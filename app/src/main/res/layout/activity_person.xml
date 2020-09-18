@@ -18,8 +18,8 @@
         android:background="@drawable/photobackground"
         tools:srcCompat="@drawable/test" />
 
-     <TextView
-        android:id="@+id/personname"
+     <EditText
+        android:id="@+id/personemail"
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_hight"
         android:layout_below="@+id/imageView"
@@ -27,14 +27,14 @@
         android:gravity="center"
         android:layout_margin="8dp"
         android:textSize="@dimen/sub_text_size"
-        android:text="@string/player_name"
+        android:hint="@string/player_email"
         />
 
     <EditText
         android:id="@+id/editPersonName"
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_hight"
-        android:layout_below="@+id/personname"
+        android:layout_below="@+id/personemail"
         android:layout_margin="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -43,7 +43,7 @@
         android:background="@drawable/textview_background"
         android:ems="10"
         android:gravity="center"
-        android:hint="@string/player_name_hint"
+        android:hint="@string/player_name"
         android:inputType="textPersonName"
         android:textSize="@dimen/sub_text_size" />
 

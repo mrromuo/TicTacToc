@@ -34,8 +34,8 @@
         android:layout_gravity="center"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/personname"
+        <EditText
+            android:id="@+id/personemail"
             android:layout_width="match_parent"
             android:layout_height="@dimen/text_hight"
             android:layout_marginStart="8dp"
@@ -44,7 +44,7 @@
             android:layout_marginBottom="8dp"
             android:background="@drawable/textview_background"
             android:gravity="center"
-            android:text="@string/player_name"
+            android:hint="@string/player_email"
             android:textSize="@dimen/sub_text_size" />
 
         <EditText
@@ -58,7 +58,7 @@
             android:background="@drawable/textview_background"
             android:ems="10"
             android:gravity="center"
-            android:hint="@string/player_name_hint"
+            android:hint="@string/player_name"
             android:inputType="textPersonName"
             android:textSize="@dimen/sub_text_size" />
         <EditText

@@ -9,7 +9,8 @@
     <string name="player1win">Player 1 wener</string>
     <string name="player2win">PLAYER 2 wener</string>
     <string name="android">Android</string>
-    <string name="player_name">Enter Your Name Below</string>
+    <string name="player_email">Enter your Email, please.</string>
+    <string name="player_name">Enter Your Name, please.</string>
     <string name="player_name_hint">Raeed Mansour Al Gassab</string>
     <string name="sumbut_it">submit</string>
     <string name="winerannoun">THE WINNER IS</string>
@@ -133,4 +134,5 @@
     <string name="selectionMain">Selecet one Plese</string>
     <string name="tele">Telephone Number</string>
     <string name="infopage">Personal information View</string>
+    <string name="welcome">Welcom in TecTacToc Game</string>
 </resources>

@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,15 +29,19 @@ public class SelectActivity extends AppCompatActivity {
     public static final String MAIN_PLAYER = "main_name";
     public static final String MAIN_USER_ID_KEY = "UsrId";
     public static final String NOT_YET = "NoName";
-    public static final int VIRSION = 2000;
+    public static final String PHONE_KEY = "TelePhone";
+    public static final String EMAIL_KEY = "userEmail";
+    public static final String IMAGE_KEY = "imagekey";
+    public static final String IMAGE_NotYet = "notfound.png";
+    public static final String PrfileImageChiled = "profileImage";
     public static final int PERSON_INFO_REQUEST = 1;
     public static final int PERSON_update_REQUEST = 15;
-    public static String MAIN_PLAYER_V;
     public static String MAIN_PLAYER_NAME;
     public static String MAIN_PLAYER_ID;
-    public static String MAIN_PLAYER_I;
     public static String telephone;
     public static String imagekey;
+    public static String IMAGE_NAME;
+    public static String email;
     public int lastId,NewId;
     private HashMap hashMap;
     private String aname;
@@ -50,22 +55,44 @@ public class SelectActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
     // FireBase Storage and relTime database configurations:
     FirebaseStorage storage = FirebaseStorage.getInstance();
+    FirebaseAuth auth = FirebaseAuth.getInstance();
     DatabaseReference RootRef;
     FirebaseDatabase MyData = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = MyData.getReference("users");
     DatabaseReference LastID = MyData.getReference("lastId");
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = sharedPreferences.edit();
-        Checkstatus();
+        if (FirebaseAuth.getInstance().getCurrentUser() == null)
+
+        {
+            Intent infoperson = new Intent(getBaseContext(), person.class);
+            startActivityForResult(infoperson,PERSON_INFO_REQUEST);
+
+        }
+        else
+            {
+                MAIN_PLAYER_NAME = auth.getCurrentUser().getDisplayName();
+                email = auth.getCurrentUser().getEmail();
+                String text = getString(R.string.welcomback) + " " + MAIN_PLAYER_NAME;
+                readId();
+                MAIN_PLAYER_ID = sharedPreferences.getString(MAIN_USER_ID_KEY, "ID_01");
+                Toast.makeText(getApplicationContext(),text,Toast.LENGTH_LONG).show();
+
+            }
+
+
+
+
         readId();
         Rg = findViewById(R.id.Main_radioGroup);
         ok = findViewById(R.id.Select_Ok);
-        ok.setOnClickListener(new View.OnClickListener() {
+        ok.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 if (SelectedIntent != null) startActivity(SelectedIntent);
@@ -77,7 +104,8 @@ public class SelectActivity extends AppCompatActivity {
 
     }
 
-    public void RadioGroubSelection(View view) {
+    public void RadioGroubSelection(View view)
+    {
         int selectin = view.getId();
         switch (selectin) {
             case R.id.androidSelected:
@@ -95,15 +123,7 @@ public class SelectActivity extends AppCompatActivity {
         }
     }
 
-    private void Checkstatus()
-    {
-        MAIN_PLAYER_V = sharedPreferences.getString(MAIN_PLAYER, NOT_YET);
-        MAIN_PLAYER_I = sharedPreferences.getString(MAIN_USER_ID_KEY, "ID_X");
-        int isVirsion= sharedPreferences.getInt("VR", 1);
-        Intent infoperson = new Intent(getBaseContext(), person.class);
-        if (isVirsion != VIRSION) startActivityForResult(infoperson, PERSON_INFO_REQUEST);
-        else checkFireBase(MAIN_PLAYER_V ,MAIN_PLAYER_I);
-    }
+
     void checkFireBase(String Name , String Id)
     {
         aname =Name;
@@ -127,7 +147,8 @@ public class SelectActivity extends AppCompatActivity {
         });
     }
 
-    private void setId() {
+    private void setId()
+    {
         final DatabaseReference RootRef;
         RootRef = FirebaseDatabase.getInstance().getReference();
         NewId = lastId +1;
@@ -135,14 +156,20 @@ public class SelectActivity extends AppCompatActivity {
         editor.putString(MAIN_USER_ID_KEY, MAIN_PLAYER_ID);
         editor.apply();
         LastID.setValue(NewId);
+        Intent intent =new Intent();
+        intent.putExtra(MAIN_USER_ID_KEY,MAIN_PLAYER_ID);
+        editor.putString(MAIN_USER_ID_KEY,MAIN_PLAYER_ID);
+        editor.apply();
+
         //myRef.child(MAIN_PLAYER_ID).setValue(MAIN_PLAYER_NAME); // this way was working but we go for more advance way using HashMap.
         RootRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 HashMap<String,Object> userdataMap = new HashMap<>();
-                userdataMap.put("name",MAIN_PLAYER_NAME);
-                userdataMap.put("imgekey",imagekey);
-                userdataMap.put("TelePhone",telephone);
+                userdataMap.put(MAIN_PLAYER,MAIN_PLAYER_NAME);
+                userdataMap.put(IMAGE_KEY,IMAGE_NAME);
+                userdataMap.put(PHONE_KEY,telephone);
+                userdataMap.put(EMAIL_KEY,email);
                 RootRef.child("users").child(MAIN_PLAYER_ID).updateChildren(userdataMap)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -164,17 +191,21 @@ public class SelectActivity extends AppCompatActivity {
             }
         });
     }
-    private void update() {
+    private void update()
+    {
         final DatabaseReference RootRef;
         RootRef = FirebaseDatabase.getInstance().getReference();
+        readId();
         //myRef.child(MAIN_PLAYER_ID).setValue(MAIN_PLAYER_NAME); // this way was working but we go for more advance way using HashMap.
         RootRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 HashMap<String,Object> userdataMap = new HashMap<>();
-                userdataMap.put("name",MAIN_PLAYER_NAME);
-                userdataMap.put("imgekey",imagekey);
-                userdataMap.put("TelePhone",telephone);
+                userdataMap.put(MAIN_PLAYER,MAIN_PLAYER_NAME);
+                userdataMap.put(IMAGE_KEY,IMAGE_NAME);
+                userdataMap.put(PHONE_KEY,telephone);
+                userdataMap.put(EMAIL_KEY,email);
+
                 RootRef.child("users").child(MAIN_PLAYER_ID).updateChildren(userdataMap)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -197,28 +228,31 @@ public class SelectActivity extends AppCompatActivity {
         });
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK & requestCode == PERSON_INFO_REQUEST) {
             MAIN_PLAYER_NAME = data.getStringExtra(MAIN_PLAYER);
-            imagekey =data.getStringExtra("imagekey");
-            telephone =data.getStringExtra("TelePhone");
+            IMAGE_NAME = data.getStringExtra(IMAGE_KEY);
+            telephone =data.getStringExtra(PHONE_KEY);
+            email=data.getStringExtra(EMAIL_KEY);
             editor.putString(MAIN_PLAYER, MAIN_PLAYER_NAME);
-            editor.putString("imagekey", imagekey);
-            editor.putString("TelePhone", telephone);
-            editor.putInt("VR",VIRSION);
+            editor.putString(IMAGE_KEY, IMAGE_NAME);
+            editor.putString(PHONE_KEY, telephone);
+            editor.putString(EMAIL_KEY, email);
             editor.apply();
             setId();
         }
         else if(resultCode == RESULT_OK & requestCode == PERSON_update_REQUEST)
         {
             MAIN_PLAYER_NAME = data.getStringExtra(MAIN_PLAYER);
-            imagekey =data.getStringExtra("imagekey");
-            telephone =data.getStringExtra("TelePhone");
+            IMAGE_NAME =data.getStringExtra(IMAGE_KEY);
+            telephone =data.getStringExtra(PHONE_KEY);
+            email=data.getStringExtra(EMAIL_KEY);
             editor.putString(MAIN_PLAYER, MAIN_PLAYER_NAME);
-            editor.putString("imagekey", imagekey);
-            editor.putString("TelePhone", telephone);
-            editor.putInt("VR",VIRSION);
+            editor.putString(IMAGE_KEY, IMAGE_NAME);
+            editor.putString(PHONE_KEY, telephone);
+            editor.putString(EMAIL_KEY, email);
             editor.apply();
             update();
 
@@ -226,7 +260,10 @@ public class SelectActivity extends AppCompatActivity {
         else if (resultCode == RESULT_CANCELED & requestCode == PERSON_INFO_REQUEST)
         {
                 MAIN_PLAYER_NAME= NOT_YET;
-                editor.putString(MAIN_PLAYER, NOT_YET);
+                editor.putString(MAIN_PLAYER, MAIN_PLAYER_NAME);
+                editor.putString(IMAGE_KEY, IMAGE_NotYet);
+                editor.putString(PHONE_KEY, "telephone ??");
+                editor.putString(EMAIL_KEY, "email: ??");
                 editor.apply();
                 setId();
         }
@@ -236,17 +273,16 @@ public class SelectActivity extends AppCompatActivity {
         }
     }
 
- /*   public void setIdv(View view) {
-        setId();
-    }*/
-    public void readId(){
-        LastID.addValueEventListener(new ValueEventListener() {
+    public void readId()
+    {
+        LastID.addValueEventListener(new ValueEventListener()
+        {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
                 int id = snapshot.getValue(Integer.class);
                 lastId = id;
                 //Toast.makeText(getBaseContext(),Text,Toast.LENGTH_LONG).show();
-                // todo remove this toast!!!
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -257,13 +293,14 @@ public class SelectActivity extends AppCompatActivity {
 
     }
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         // Handle item selection
 
         switch (item.getItemId()) {
             case R.id.Info_page:
                 Intent InfoIntent=new Intent(getBaseContext(),UserInfoPage.class);
-                startActivity(InfoIntent);
+                startActivityForResult(InfoIntent,PERSON_update_REQUEST);
                 return true;
             case R.id.bakgnd:
                 Toast toast2 = Toast.makeText(getBaseContext(), "Background change option coming soon", Toast.LENGTH_LONG);
@@ -277,7 +314,7 @@ public class SelectActivity extends AppCompatActivity {
                 return true;
             case R.id.info:
                 Intent infoperson = new Intent(getBaseContext(), person.class);
-                startActivityForResult(infoperson, PERSON_INFO_REQUEST);
+                startActivityForResult(infoperson, PERSON_update_REQUEST);
                 return true;
             case R.id.androidgm:
                 Intent AndroidGM = new Intent(getApplicationContext(), AndroidGame.class);
@@ -300,7 +337,8 @@ public class SelectActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         return true;
