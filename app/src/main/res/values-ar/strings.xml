@@ -18,9 +18,10 @@
     <string name="winerannoun">الفائز هو</string>
 
     <!-- Main Menu -->
-    <string name="bkgroind">الصورة الخلفية</string>
+    <string name="bkgroind">تسجيل خروج</string>
     <string name="gmhistory">سجل اللعبة</string>
     <string name="information">معلوماتك الشخصية</string>
+    <string name="informationEdir"> تعديل معلوماتك الشخصية</string>
     <string name="gmandroid">العب مع اندرويد</string>
     <string name="remotgame">العب عن بعد</string>
     <string name="gmhuman">العب مع شخص آخر</string>
