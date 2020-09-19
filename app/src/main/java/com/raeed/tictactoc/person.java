@@ -55,13 +55,9 @@ public class person extends AppCompatActivity {
     EditText newname, phone,Email;
     Button save,cancel;
     Intent intent;
-
-
     private static final String TAG = "person";
     int AUTHUI_REQUEST_CODE = 11476;
-
     private static String ImageName,MainName,MainId,oldPhone,oldEmail;
-    //final static int REQUEST_CODE=1; //requestCode
 
     // FireBase Storage and relTime database configurations:
     private FirebaseStorage storage = FirebaseStorage.getInstance("gs://tictactoc-8bbfd.appspot.com");
@@ -69,7 +65,9 @@ public class person extends AppCompatActivity {
     public Uri imageUri,uri;
     private Bitmap bt;
     List<AuthUI.IdpConfig> provider = Arrays.asList(
-            new AuthUI.IdpConfig.EmailBuilder().build());
+            new AuthUI.IdpConfig.EmailBuilder().build(),
+            new AuthUI.IdpConfig.GoogleBuilder().build()
+    );
     // App Shared Preferences file
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -102,6 +100,7 @@ public class person extends AppCompatActivity {
             Intent intent =AuthUI.getInstance()
                     .createSignInIntentBuilder()
                     .setAvailableProviders(provider)   // you can add .setlogo(R.drawable.logo)  and setTosAndPrivacyUrls()
+                    .setAlwaysShowSignInMethodScreen(true)
                     .build();
             startActivityForResult(intent,AUTHUI_REQUEST_CODE);
         }
@@ -263,7 +262,7 @@ public class person extends AppCompatActivity {
             ImageName = UUID.randomUUID().toString()+".jpeg";
         }
         else if (ImageName == null) ImageName = UUID.randomUUID().toString()+".jpeg";
-        
+
 
         StorageReference riversRef = storageReference.child(PrfileImageChiled).child(ImageName);
 
