@@ -12,7 +12,7 @@
     <group>
         <item android:title="@string/gmhistory"
             android:id="@+id/historygm"/>
-        <item android:title="@string/information"
+        <item android:title="@string/informationEdir"
             android:id="@+id/info"/>
         <item android:title="@string/gmandroid"
             android:id="@+id/androidgm"/>
