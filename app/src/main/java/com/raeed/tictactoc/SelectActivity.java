@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,7 +15,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -25,7 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import java.util.HashMap;
 
-public class SelectActivity extends AppCompatActivity {
+public class SelectActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener{
     public static final String MAIN_PLAYER = "main_name";
     public static final String MAIN_USER_ID_KEY = "UsrId";
     public static final String NOT_YET = "NoName";
@@ -36,6 +40,7 @@ public class SelectActivity extends AppCompatActivity {
     public static final String PrfileImageChiled = "profileImage";
     public static final int PERSON_INFO_REQUEST = 1;
     public static final int PERSON_update_REQUEST = 15;
+    private static final String TAG ="SelectActivity" ;
     public static String MAIN_PLAYER_NAME;
     public static String MAIN_PLAYER_ID;
     public static String telephone;
@@ -61,26 +66,6 @@ public class SelectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_select);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = sharedPreferences.edit();
-        if (FirebaseAuth.getInstance().getCurrentUser() == null)
-
-        {
-            Intent infoperson = new Intent(getBaseContext(), person.class);
-            startActivityForResult(infoperson,PERSON_INFO_REQUEST);
-
-        }
-        else
-            {
-                MAIN_PLAYER_NAME = auth.getCurrentUser().getDisplayName();
-                email = auth.getCurrentUser().getEmail();
-                String text = getString(R.string.welcomback) + " " + MAIN_PLAYER_NAME;
-                readId();
-                MAIN_PLAYER_ID = sharedPreferences.getString(MAIN_USER_ID_KEY, "ID_01");
-                Toast.makeText(getApplicationContext(),text,Toast.LENGTH_LONG).show();
-
-            }
-
-
-
 
         readId();
         Rg = findViewById(R.id.Main_radioGroup);
@@ -117,6 +102,7 @@ public class SelectActivity extends AppCompatActivity {
         }
     }
 
+    // todo ________________>>>> Data handling  <<<<<_________________
     private void setId()
     {
 
@@ -250,6 +236,8 @@ public class SelectActivity extends AppCompatActivity {
         });
 
     }
+
+    //todo _______________________8( Options Menu area )8__________________________>
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -261,9 +249,7 @@ public class SelectActivity extends AppCompatActivity {
                 startActivity(InfoIntent);
                 return true;
             case R.id.bakgnd:
-                Toast toast2 = Toast.makeText(getBaseContext(), "Background change option coming soon", Toast.LENGTH_LONG);
-                toast2.show();
-                //backgroundChanger();
+                SingMeOut();
                 return true;
             case R.id.historygm:
                 Intent intentHist = new Intent(getBaseContext(), gamehistory.class);
@@ -301,4 +287,41 @@ public class SelectActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_main, menu);
         return true;
     }
+
+    //todo ____________________8( Login and register management area )8__________________________>
+
+    @Override
+    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth)
+    {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) logmein();
+    }
+
+    private void logmein()
+    {
+
+            Intent infoperson = new Intent(getBaseContext(), person.class);
+            startActivityForResult(infoperson,PERSON_INFO_REQUEST);
+
+    }
+    private void SingMeOut()
+    {
+        AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Log.d(TAG,"OnComplete: "+ task.getResult()) ;
+            }
+        });
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseAuth.getInstance().addAuthStateListener(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FirebaseAuth.getInstance().removeAuthStateListener(this);
+    }
+
 }
