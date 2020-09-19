@@ -16,9 +16,10 @@
     <string name="winerannoun">THE WINNER IS</string>
 
     <!-- Main Menu -->
-    <string name="bkgroind">Background</string>
+    <string name="bkgroind">Sign Out</string>
     <string name="gmhistory">Game History</string>
     <string name="information">Personal Information</string>
+    <string name="informationEdir">Personal Information Edit</string>
     <string name="gmandroid">Play with android</string>
     <string name="remotgame">Play a Remot Game</string>
     <string name="gmhuman">Play with Human</string>
