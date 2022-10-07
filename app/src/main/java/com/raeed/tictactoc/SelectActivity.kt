@@ -1,327 +1,302 @@
-package com.raeed.tictactoc;
+package com.raeed.tictactoc
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.RadioGroup;
-import android.widget.Toast;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import android.content.Intent
+import android.widget.RadioGroup
+import android.content.SharedPreferences
+import com.google.firebase.storage.FirebaseStorage
+import android.os.Bundle
+import com.raeed.tictactoc.R
+import android.preference.PreferenceManager
+import android.widget.Toast
+import com.raeed.tictactoc.AndroidGame
+import com.raeed.tictactoc.MainActivity
+import com.raeed.tictactoc.RemoPlay
+import com.raeed.tictactoc.Gameseting
+import com.raeed.tictactoc.SelectActivity
+import com.google.android.gms.tasks.OnCompleteListener
+import android.app.Activity
+import android.util.Log
+import android.view.Menu
+import com.raeed.tictactoc.UserInfoPage
+import com.raeed.tictactoc.Gamehistory
+import com.raeed.tictactoc.Helpp
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.widget.Button
+import com.firebase.ui.auth.AuthUI
+import com.google.firebase.database.*
+import java.util.HashMap
 
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import java.util.HashMap;
+class SelectActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
+      var lastId = 0
+      var NewId = 0
+      var SelectedIntent: Intent? = null
+      var ok: Button? = null
+      var Rg: RadioGroup? = null
+      var sharedPreferences: SharedPreferences? = null
+      var editor: SharedPreferences.Editor? = null
 
-public class SelectActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener{
-    public static final String MAIN_PLAYER = "main_name";
-    public static final String MAIN_USER_ID_KEY = "UsrId";
-    public static final String NOT_YET = "NoName";
-    public static final String PHONE_KEY = "TelePhone";
-    public static final String EMAIL_KEY = "userEmail";
-    public static final String IMAGE_KEY = "imagekey";
-    public static final String IMAGE_NotYet = "notfound.png";
-    public static final String PrfileImageChiled = "profileImage";
-    public static final int PERSON_INFO_REQUEST = 1;
-    public static final int PERSON_update_REQUEST = 15;
-    private static final String TAG ="SelectActivity" ;
-    public static String MAIN_PLAYER_NAME;
-    public static String MAIN_PLAYER_ID;
-    public static String telephone;
-    public static String IMAGE_NAME;
-    public static String email;
-    public int lastId,NewId;
-    Intent SelectedIntent = null;
-    Button ok;
-    RadioGroup Rg;
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
-    // FireBase Storage and relTime database configurations:
-    FirebaseStorage storage = FirebaseStorage.getInstance();
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    DatabaseReference RootRef;
-    FirebaseDatabase MyData = FirebaseDatabase.getInstance();
-    DatabaseReference LastID = MyData.getReference("lastId");
+      // FireBase Storage and relTime database configurations:
+      var storage = FirebaseStorage.getInstance()
+      var auth = FirebaseAuth.getInstance()
+      var RootRef: DatabaseReference? = null
+      var MyData = FirebaseDatabase.getInstance()
+      var LastID = MyData.getReference("lastId")
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        editor = sharedPreferences.edit();
+      override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_select)
 
-        readId();
-        Rg = findViewById(R.id.Main_radioGroup);
-        ok = findViewById(R.id.Select_Ok);
-        ok.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v) {
-                if (SelectedIntent != null) startActivity(SelectedIntent);
-                else
-                    Toast.makeText(getBaseContext(), "No selection found", Toast.LENGTH_LONG).show();
-                // TODO Arabic Version
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+            editor = sharedPreferences?.edit()
+            readId()
+            Rg = findViewById(R.id.Main_radioGroup)
+            ok = findViewById(R.id.Select_Ok)
+            ok?.setOnClickListener(View.OnClickListener {
+                  if (SelectedIntent != null) startActivity(SelectedIntent) else Toast.makeText(
+                        baseContext,
+                        "No selection found",
+                        Toast.LENGTH_LONG
+                  ).show()
+                  // TODO Arabic Version
+            })
+      }
+
+      fun RadioGroubSelection(view: View) {
+            val selectin = view.id
+            when (selectin) {
+                  R.id.androidSelected -> SelectedIntent =
+                        Intent(applicationContext, AndroidGame::class.java)
+                  R.id.HumanSelected -> SelectedIntent =
+                        Intent(applicationContext, MainActivity::class.java)
+                  R.id.RemotSelected -> SelectedIntent =
+                        Intent(applicationContext, RemoPlay::class.java)
+                  R.id.settingSelectted -> SelectedIntent =
+                        Intent(applicationContext, Gameseting::class.java)
             }
-        });
+      }
 
-    }
+      // todo ________________>>>> Data handling  <<<<<_________________
+      private fun setId() {
+            RootRef = FirebaseDatabase.getInstance().reference
+            NewId = lastId + 1
+            MAIN_PLAYER_ID = "ID_$NewId"
+            editor!!.putString(MAIN_USER_ID_KEY, MAIN_PLAYER_ID)
+            editor!!.apply()
+            LastID.setValue(NewId)
+            val intent = Intent()
+            intent.putExtra(MAIN_USER_ID_KEY, MAIN_PLAYER_ID)
+            editor!!.putString(MAIN_USER_ID_KEY, MAIN_PLAYER_ID)
+            editor!!.apply()
+            RootRef!!.child("users").child(MAIN_PLAYER_ID!!).child(IMAGE_KEY).setValue(IMAGE_NAME)
 
-    public void RadioGroubSelection(View view)
-    {
-        int selectin = view.getId();
-        switch (selectin) {
-            case R.id.androidSelected:
-                SelectedIntent = new Intent(getApplicationContext(), AndroidGame.class);
-                break;
-            case R.id.HumanSelected:
-                SelectedIntent = new Intent(getApplicationContext(), MainActivity.class);
-                break;
-            case R.id.RemotSelected:
-                SelectedIntent = new Intent(getApplicationContext(), RemoPlay.class);
-                break;
-            case R.id.settingSelectted:
-                SelectedIntent = new Intent(getApplicationContext(), gameseting.class);
-                break;
-        }
-    }
+            //myRef.child(MAIN_PLAYER_ID).setValue(MAIN_PLAYER_NAME); // this way was working but we go for more advance way using HashMap.
+            RootRef!!.addListenerForSingleValueEvent(object : ValueEventListener {
+                  override fun onDataChange(snapshot: DataSnapshot) {
+                        val userdataMap = HashMap<String, Any?>()
+                        userdataMap[MAIN_PLAYER] = MAIN_PLAYER_NAME
+                        userdataMap[IMAGE_KEY] = IMAGE_NAME
+                        userdataMap[PHONE_KEY] = telephone
+                        userdataMap[EMAIL_KEY] = email
+                        RootRef!!.child("users").child(MAIN_PLAYER_ID!!).setValue(userdataMap)
+                              .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                          val NewTet = getString(R.string.accountdone)
+                                          Toast.makeText(baseContext, NewTet, Toast.LENGTH_LONG)
+                                                .show()
+                                    } else {
+                                          val NewText = getString(R.string.sorryaccountnot)
+                                          Toast.makeText(baseContext, NewText, Toast.LENGTH_LONG)
+                                                .show()
+                                    }
+                              }
+                  }
 
-    // todo ________________>>>> Data handling  <<<<<_________________
-    private void setId()
-    {
+                  override fun onCancelled(error: DatabaseError) {
+                        val NewText = getString(R.string.sorryaccountnot)
+                        Toast.makeText(baseContext, NewText, Toast.LENGTH_LONG).show()
+                  }
+            })
+      }
 
-        RootRef = FirebaseDatabase.getInstance().getReference();
-        NewId = lastId +1;
-        MAIN_PLAYER_ID = "ID_"+ NewId;
-        editor.putString(MAIN_USER_ID_KEY, MAIN_PLAYER_ID);
-        editor.apply();
-        LastID.setValue(NewId);
-        Intent intent =new Intent();
-        intent.putExtra(MAIN_USER_ID_KEY,MAIN_PLAYER_ID);
-        editor.putString(MAIN_USER_ID_KEY,MAIN_PLAYER_ID);
-        editor.apply();
-        RootRef.child("users").child(MAIN_PLAYER_ID).child(IMAGE_KEY).setValue(IMAGE_NAME);
+      private fun update() {
+            RootRef = FirebaseDatabase.getInstance().reference
+            readId()
+            //myRef.child(MAIN_PLAYER_ID).setValue(MAIN_PLAYER_NAME); // this way was working but we go for more advance way using HashMap.
+            RootRef!!.child("users").child(MAIN_PLAYER_ID!!).child(IMAGE_KEY).setValue(IMAGE_NAME)
+            RootRef!!.addListenerForSingleValueEvent(object : ValueEventListener {
+                  override fun onDataChange(snapshot: DataSnapshot) {
+                        val userdataMap = HashMap<String, Any?>()
+                        userdataMap[MAIN_PLAYER] = MAIN_PLAYER_NAME
+                        userdataMap[IMAGE_KEY] = IMAGE_NAME
+                        userdataMap[PHONE_KEY] = telephone
+                        userdataMap[EMAIL_KEY] = email
+                        RootRef!!.child("users").child(MAIN_PLAYER_ID!!).updateChildren(userdataMap)
+                              .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                          val NewTet = getString(R.string.accountdone)
+                                          Toast.makeText(baseContext, NewTet, Toast.LENGTH_LONG)
+                                                .show()
+                                    } else {
+                                          val NewText = getString(R.string.sorryaccountnot)
+                                          Toast.makeText(baseContext, NewText, Toast.LENGTH_LONG)
+                                                .show()
+                                    }
+                              }
+                  }
 
-        //myRef.child(MAIN_PLAYER_ID).setValue(MAIN_PLAYER_NAME); // this way was working but we go for more advance way using HashMap.
-        RootRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                HashMap<String,Object> userdataMap = new HashMap<>();
-                userdataMap.put(MAIN_PLAYER,MAIN_PLAYER_NAME);
-                userdataMap.put(IMAGE_KEY,IMAGE_NAME);
-                userdataMap.put(PHONE_KEY,telephone);
-                userdataMap.put(EMAIL_KEY,email);
-                RootRef.child("users").child(MAIN_PLAYER_ID).setValue(userdataMap)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()) {
-                                    String NewTet = getString(R.string.accountdone);
-                                    Toast.makeText(getBaseContext(),NewTet,Toast.LENGTH_LONG).show();
-                                } else {
-                                    String NewText = getString(R.string.sorryaccountnot);
-                                    Toast.makeText(getBaseContext(),NewText,Toast.LENGTH_LONG).show();}
-                            }
-                        });
+                  override fun onCancelled(error: DatabaseError) {
+                        val NewText = getString(R.string.sorryaccountnot)
+                        Toast.makeText(baseContext, NewText, Toast.LENGTH_LONG).show()
+                  }
+            })
+      }
+
+      override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+            super.onActivityResult(requestCode, resultCode, data)
+            if (resultCode == RESULT_OK) {
+                  if (requestCode == PERSON_INFO_REQUEST) {
+                        MAIN_PLAYER_NAME = data!!.getStringExtra(MAIN_PLAYER)
+                        IMAGE_NAME = data.getStringExtra(IMAGE_KEY)
+                        telephone = data.getStringExtra(PHONE_KEY)
+                        email = data.getStringExtra(EMAIL_KEY)
+                        editor!!.putString(MAIN_PLAYER, MAIN_PLAYER_NAME)
+                        editor!!.putString(IMAGE_KEY, IMAGE_NAME)
+                        editor!!.putString(PHONE_KEY, telephone)
+                        editor!!.putString(EMAIL_KEY, email)
+                        editor!!.apply()
+                        setId()
+                  } else {
+                        MAIN_PLAYER_NAME = data!!.getStringExtra(MAIN_PLAYER)
+                        IMAGE_NAME = data.getStringExtra(IMAGE_KEY)
+                        telephone = data.getStringExtra(PHONE_KEY)
+                        email = data.getStringExtra(EMAIL_KEY)
+                        editor!!.putString(MAIN_PLAYER, MAIN_PLAYER_NAME)
+                        editor!!.putString(IMAGE_KEY, IMAGE_NAME)
+                        editor!!.putString(PHONE_KEY, telephone)
+                        editor!!.putString(EMAIL_KEY, email)
+                        editor!!.apply()
+                        update()
+                  }
+            } else Toast.makeText(baseContext, "RESULT CANCELED", Toast.LENGTH_SHORT).show()
+      }
+
+      fun readId() {
+            LastID.addValueEventListener(object : ValueEventListener {
+                  override fun onDataChange(snapshot: DataSnapshot) {
+                        val id = snapshot.getValue(Int::class.java)!!
+                        lastId = id
+                        //Toast.makeText(getBaseContext(),Text,Toast.LENGTH_LONG).show();
+                  }
+
+                  override fun onCancelled(error: DatabaseError) {
+                        val text = error.message
+                        Toast.makeText(applicationContext, text, Toast.LENGTH_LONG).show()
+                  }
+            })
+      }
+
+      //todo _______________________8( Options Menu area )8__________________________>
+      override fun onOptionsItemSelected(item: MenuItem): Boolean {
+            // Handle item selection
+            return when (item.itemId) {
+                  R.id.Info_page -> {
+                        val InfoIntent = Intent(baseContext, UserInfoPage::class.java)
+                        startActivity(InfoIntent)
+                        true
+                  }
+                  R.id.bakgnd -> {
+                        SingMeOut()
+                        true
+                  }
+                  R.id.historygm -> {
+                        val intentHist = Intent(baseContext, Gamehistory::class.java)
+                        //startActivity(intentHist);
+                        Toast.makeText(this, "Coming soon", Toast.LENGTH_LONG).show()
+                        true
+                  }
+                  R.id.info -> {
+                        val infoperson = Intent(baseContext, Person::class.java)
+                        startActivityForResult(infoperson, PERSON_update_REQUEST)
+                        true
+                  }
+                  R.id.androidgm -> {
+                        val AndroidGM = Intent(applicationContext, AndroidGame::class.java)
+                        startActivity(AndroidGM)
+                        true
+                  }
+                  R.id.humangm -> {
+                        val HumanGM = Intent(applicationContext, RemoPlay::class.java)
+                        startActivity(HumanGM)
+                        true
+                  }
+                  R.id.settingactivity -> {
+                        val intentset = Intent(baseContext, Gameseting::class.java)
+                        startActivity(intentset)
+                        true
+                  }
+                  R.id.help -> {
+                        val intenthlp = Intent(baseContext, Helpp::class.java)
+                        startActivity(intenthlp)
+                        super.onOptionsItemSelected(item)
+                  }
+                  else -> super.onOptionsItemSelected(item)
             }
+      }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                String NewText = getString(R.string.sorryaccountnot);
-                Toast.makeText(getBaseContext(),NewText,Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-    private void update()
-    {
+      override fun onCreateOptionsMenu(menu: Menu): Boolean {
+            val inflater = menuInflater
+            inflater.inflate(R.menu.menu_main, menu)
+            return true
+      }
 
-        RootRef = FirebaseDatabase.getInstance().getReference();
-        readId();
-        //myRef.child(MAIN_PLAYER_ID).setValue(MAIN_PLAYER_NAME); // this way was working but we go for more advance way using HashMap.
-        RootRef.child("users").child(MAIN_PLAYER_ID).child(IMAGE_KEY).setValue(IMAGE_NAME);
-        RootRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                HashMap<String,Object> userdataMap = new HashMap<>();
-                userdataMap.put(MAIN_PLAYER,MAIN_PLAYER_NAME);
-                userdataMap.put(IMAGE_KEY,IMAGE_NAME);
-                userdataMap.put(PHONE_KEY,telephone);
-                userdataMap.put(EMAIL_KEY,email);
+      //todo ____________________8( Login and register management area )8__________________________>
+      override fun onAuthStateChanged(firebaseAuth: FirebaseAuth) {
+            if (FirebaseAuth.getInstance().currentUser == null) logmein()
+      }
 
-                RootRef.child("users").child(MAIN_PLAYER_ID).updateChildren(userdataMap)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()) {
-                                    String NewTet = getString(R.string.accountdone);
-                                    Toast.makeText(getBaseContext(),NewTet,Toast.LENGTH_LONG).show();
-                                } else {
-                                    String NewText = getString(R.string.sorryaccountnot);
-                                    Toast.makeText(getBaseContext(),NewText,Toast.LENGTH_LONG).show();}
-                            }
-                        });
-            }
+      private fun logmein() {
+            val infoperson = Intent(baseContext, Person::class.java)
+            startActivityForResult(infoperson, PERSON_INFO_REQUEST)
+      }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                String NewText = getString(R.string.sorryaccountnot);
-                Toast.makeText(getBaseContext(),NewText,Toast.LENGTH_LONG).show();
-            }
-        });
-    }
+      private fun SingMeOut() {
+            AuthUI.getInstance().signOut(this)
+                  .addOnCompleteListener { task -> Log.d(TAG, "OnComplete: " + task.result) }
+      }
 
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == PERSON_INFO_REQUEST) {
-                MAIN_PLAYER_NAME = data.getStringExtra(MAIN_PLAYER);
-                IMAGE_NAME = data.getStringExtra(IMAGE_KEY);
-                telephone = data.getStringExtra(PHONE_KEY);
-                email = data.getStringExtra(EMAIL_KEY);
-                editor.putString(MAIN_PLAYER, MAIN_PLAYER_NAME);
-                editor.putString(IMAGE_KEY, IMAGE_NAME);
-                editor.putString(PHONE_KEY, telephone);
-                editor.putString(EMAIL_KEY, email);
-                editor.apply();
-                setId();
-            } else {
-                MAIN_PLAYER_NAME = data.getStringExtra(MAIN_PLAYER);
-                IMAGE_NAME = data.getStringExtra(IMAGE_KEY);
-                telephone = data.getStringExtra(PHONE_KEY);
-                email = data.getStringExtra(EMAIL_KEY);
-                editor.putString(MAIN_PLAYER, MAIN_PLAYER_NAME);
-                editor.putString(IMAGE_KEY, IMAGE_NAME);
-                editor.putString(PHONE_KEY, telephone);
-                editor.putString(EMAIL_KEY, email);
-                editor.apply();
-                update();
-            }
+      override fun onStart() {
+            super.onStart()
+            FirebaseAuth.getInstance().addAuthStateListener(this)
+      }
 
-        } else Toast.makeText(getBaseContext(), "RESULT CANCELED", Toast.LENGTH_SHORT).show();
+      override fun onStop() {
+            super.onStop()
+            FirebaseAuth.getInstance().removeAuthStateListener(this)
+      }
 
-    }
-
-    public void readId()
-    {
-        LastID.addValueEventListener(new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot)
-            {
-                int id = snapshot.getValue(Integer.class);
-                lastId = id;
-                //Toast.makeText(getBaseContext(),Text,Toast.LENGTH_LONG).show();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                String text = error.getMessage();
-                Toast.makeText(getApplicationContext(),text,Toast.LENGTH_LONG).show();
-            }
-        });
-
-    }
-
-    //todo _______________________8( Options Menu area )8__________________________>
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        // Handle item selection
-
-        switch (item.getItemId()) {
-            case R.id.Info_page:
-                Intent InfoIntent=new Intent(getBaseContext(),UserInfoPage.class);
-                startActivity(InfoIntent);
-                return true;
-            case R.id.bakgnd:
-                SingMeOut();
-                return true;
-            case R.id.historygm:
-                Intent intentHist = new Intent(getBaseContext(), gamehistory.class);
-                //startActivity(intentHist);
-                Toast.makeText(this, "Coming soon", Toast.LENGTH_LONG).show();
-                return true;
-            case R.id.info:
-                Intent infoperson = new Intent(getBaseContext(), person.class);
-                startActivityForResult(infoperson, PERSON_update_REQUEST);
-                return true;
-            case R.id.androidgm:
-                Intent AndroidGM = new Intent(getApplicationContext(), AndroidGame.class);
-                startActivity(AndroidGM);
-                return true;
-            case R.id.humangm:
-                Intent HumanGM = new Intent(getApplicationContext(), RemoPlay.class);
-                startActivity(HumanGM);
-                return true;
-            case R.id.settingactivity:
-                Intent intentset = new Intent(getBaseContext(), gameseting.class);
-                startActivity(intentset);
-                return true;
-            case R.id.help:
-                Intent intenthlp = new Intent(getBaseContext(), helpp.class);
-                startActivity(intenthlp);
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    //todo ____________________8( Login and register management area )8__________________________>
-
-    @Override
-    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth)
-    {
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) logmein();
-    }
-
-    private void logmein()
-    {
-
-            Intent infoperson = new Intent(getBaseContext(), person.class);
-            startActivityForResult(infoperson,PERSON_INFO_REQUEST);
-
-    }
-    private void SingMeOut()
-    {
-        AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Log.d(TAG,"OnComplete: "+ task.getResult()) ;
-            }
-        });
-    }
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseAuth.getInstance().addAuthStateListener(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        FirebaseAuth.getInstance().removeAuthStateListener(this);
-    }
-
+      companion object {
+            const val MAIN_PLAYER = "main_name"
+            const val MAIN_USER_ID_KEY = "UsrId"
+            const val NOT_YET = "NoName"
+            const val PHONE_KEY = "TelePhone"
+            const val EMAIL_KEY = "userEmail"
+            const val IMAGE_KEY = "imagekey"
+            const val IMAGE_NotYet = "notfound.png"
+            const val PrfileImageChiled = "profileImage"
+            const val PERSON_INFO_REQUEST = 1
+            const val PERSON_update_REQUEST = 15
+            private const val TAG = "SelectActivity"
+            @JvmField
+            var MAIN_PLAYER_NAME: String? = null
+            var MAIN_PLAYER_ID: String? = null
+            @JvmField
+            var telephone: String? = null
+            @JvmField
+            var IMAGE_NAME: String? = null
+            var email: String? = null
+      }
 }

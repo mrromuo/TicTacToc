@@ -7,7 +7,7 @@
     android:fadeScrollbars="true"
     android:scrollY="@dimen/Button_a_m"
     android:scrollbarAlwaysDrawVerticalTrack="true"
-    tools:context=".gameseting">
+    tools:context=".Gameseting">
 
     <TextView
         android:id="@+id/titleView"
